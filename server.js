@@ -12,4 +12,4 @@ var events = require('events');
 
 /*db resources*/
 var mongoose = require('mongoose');
-var config = require('./server/config');
+var config = require('./config');
