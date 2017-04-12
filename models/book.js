@@ -1,14 +1,14 @@
 var mongoose = require('mongoose');
 var bcrypt = require('bcryptjs');
 
-var movieSchema = new mongoose.Schema({
-    name: {
+var bookSchema = new mongoose.Schema({
+    bookTitle: {
         type: String,
         required: true
     }
 
 });
 
-var Movie = mongoose.model('Movie', movieSchema);
+var Book = mongoose.model('Book', bookSchema);
 
-module.exports = Movie;
+module.exports = Book;
