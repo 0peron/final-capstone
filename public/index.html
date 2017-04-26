@@ -3,23 +3,43 @@
 
 <head>
     <title>final capstone</title>
+    <link rel="stylesheet" href="normalize.css">
     <link rel="stylesheet" href="main.css">
 </head>
 
 <body>
-    <nav>
-        <section class='container'>
+    <header>
+        <h1>DeweyBooks</h1>
+        <section class='drop'>
+                    <button class='dropbtn'>
+                    <img src='/image/shopping-cart.png' class='cart-icon'>
+                    </button>
+                <ul class='dropdown-content'>
+
+                </ul>
         </section>
-    </nav>
-    <div class='wrapper'>
-    </div>
-    <div class="overlay">
-        <div class="modal_wrapper">
+    </header>
+    <section class='container'>
+        <form action="#" class="js-search-form">
+            <label for="query"></label>
+            <input type="text" class="js-query" placeholder="Book Title" value="TwentyYearsAfter">
+            <button type="submit" class="bookSearch">Search</button>
+        </form>
+    </section>
+    <section class='wrapper'>
+        <div class='errorMessage'>
+            <p></p>
         </div>
-    </div>
-    
+        <div class='bookList' id='js-book-list'>
+            <div class='bookTitles'>
+                <ul>
+                </ul>
+            </div>
+        </div>
+    </section>
+
     <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
-    <script src="apps.js"></script>
+    <script src="client.js"></script>
 </body>
 
 </html>

@@ -2,9 +2,17 @@ var mongoose = require('mongoose');
 var bcrypt = require('bcryptjs');
 
 var bookSchema = new mongoose.Schema({
-    bookTitle: {
+    name: {
         type: String,
-        required: true
+        required: false
+    },
+    idValue: {
+        type: String,
+        required: false
+    },
+    link: {
+        type: String,
+        required: false
     }
 
 });

@@ -1,0 +1,211 @@
+* {
+    box-sizing: border-box;
+    border: 0;
+    margin: 0;
+    padding: 0;
+    font-size: 100%;
+}
+
+
+/* general styles for main body */
+
+body {}
+
+ul {
+    display: block;
+    list-style-type: disc;
+    -webkit-margin-before: 0em;
+    -webkit-margin-after: 0em;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+    -webkit-padding-start: 0px;
+}
+button,
+input {
+    background-color: transparent;
+    border-radius: 8px;
+    border: 1px solid black;
+    padding: .2rem 0.5rem;
+}
+
+
+/* header styles */
+
+header {}
+
+header h1 {
+    font-size: 2em;
+    margin: 0.67em 0;
+    text-align: center;
+}
+
+header section.drop button.dropbtn {
+    margin-left: 30px;
+}
+
+header section.drop ul.dropdown-content li {
+display: block;
+}
+
+header section.drop button.dropbtn img {
+    width: 30px;
+}
+
+header section.drop ul.dropdown-content .dropdown  button.clearCartButton {
+    padding: 0;
+    border: none;
+    display: inline-block;
+}
+
+header section.drop ul.dropdown-content .dropdown  button.clearCartButton img {
+    width: 20px;
+}
+
+
+.dropbtn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+
+.dropbtn:hover, .dropbtn:focus {
+    background-color: #3e8e41;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.dropdown-content a:hover {background-color: #f1f1f1}
+
+
+/* content styles */
+
+section {}
+
+section.container {}
+
+section.container form {
+    display: block;
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+section.wrapper {}
+
+section.wrapper .bookTitles ul {
+    width: 80%;
+    margin: 0 auto;
+}
+
+section.wrapper .bookTitles ul li.bookContain {
+    display: inline-block;
+    width: 22%;
+    vertical-align: top;
+    border: 1px solid black;
+    margin-bottom: 1rem;
+    margin-left: 1%;
+    padding: 1rem;
+    margin-right: 1%;
+    border-radius: 8px;
+    box-shadow: 5px 5px grey;
+}
+
+section.wrapper .bookTitles ul li.bookContain .bookPreview .button {
+    font: bold 11px Arial;
+    text-decoration: none;
+    background-color: transparent;
+    border-radius: 8px;
+    border: 1px solid black;
+    padding: .2rem 0.5rem;
+    display: block;
+    width: 43%;
+    text-align: center;
+}
+
+section.wrapper .bookTitles ul li.bookContain .bookPreview .book-image {
+    border: 1px solid grey;
+    height: 300px;
+    width: 100%;
+    background-position: top center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 10px;
+    -webkit-box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.75);
+    box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.75);
+}
+section.wrapper .bookTitles ul li.bookContain .bookPreview .bookInfo {
+    height: 75px;
+    overflow-y: auto;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid lightgray;
+}
+section.wrapper .bookTitles ul li.bookContain .bookTitle h2 {
+    height: 75px;
+    overflow-y: auto;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid lightgray;
+}
+
+section.wrapper .bookTitles ul li.bookContain .description {
+    height: 280px;
+    overflow-y: auto;
+}
+
+section.wrapper .bookTitles ul li.bookContain .bookPreview form.addBookToCart button.addToCartButton {
+    margin-top: .4rem;
+}
+
+.dropbtn:hover, .dropbtn:focus {
+    background-color: darkorange;
+}
+
+
+/* footer styles */
+
+footer {}
+
+
+/* responsive */
+
+@media only screen and (max-width: 1000px) {
+    section.wrapper .bookTitles ul li.bookContain {
+        width: 44%;
+        
+    }
+}
+
+
+@media only screen and (max-width: 600px) {
+    section.wrapper .bookTitles ul li.bookContain {
+        width: 100%;
+        
+    }
+    section.wrapper .bookTitles ul li.bookContain .bookPreview .book-image {
+        height: 400px;
+    }
+}
