@@ -50,8 +50,8 @@ var getBookApi = function(searchTerm) {
     console.log(searchTerm);
     var emitter = new events.EventEmitter();
     var key = 'AIzaSyDiIDDnvki5T6i83J2pS-m2VsnjhINjF5E'
-    // unirest.get('https://www.googleapis.com/books/v1/volumes?q=' + searchTerm + '&key=AIzaSyDiIDDnvki5T6i83J2pS-m2VsnjhINjF5E')
-    unirest.get('https://www.googleapis.com/books/v1/volumes?q=' + searchTerm +'&maxResults=12')
+        // unirest.get('https://www.googleapis.com/books/v1/volumes?q=' + searchTerm + '&key=AIzaSyDiIDDnvki5T6i83J2pS-m2VsnjhINjF5E')
+    unirest.get('https://www.googleapis.com/books/v1/volumes?q=' + searchTerm + '&maxResults=12')
         .end(function(response) {
             if (response.ok) {
                 emitter.emit('end', response.body);
@@ -98,8 +98,8 @@ app.get('/populate-cart', function(req, res) {
 });
 
 app.post('/add-to-cart', function(req, res) {
-    console.log('idValue',req.body.idValue);
-    var requiredFields = ['name','link'];
+    console.log('idValue', req.body.idValue);
+    var requiredFields = ['name', 'link'];
     for (var i = 0; i < requiredFields.length; i++) {
         var field = requiredFields[i];
         if (!(field in req.body)) {
@@ -110,47 +110,37 @@ app.post('/add-to-cart', function(req, res) {
     }
 
     Book.create({
-        name: req.body.name,
-        link: req.body.link,
-        idValue: req.body.idValue
-    }, 
-    function(err, book) {
-        if (err) {
-            return res.status(500).json({
-                message: err
-            });
-        }
-        res.status(201).json(book);
-    });
+            name: req.body.name,
+            link: req.body.link,
+            idValue: req.body.idValue
+        },
+        function(err, book) {
+            if (err) {
+                return res.status(500).json({
+                    message: err
+                });
+            }
+            res.status(201).json(book);
+        });
 
 });
 
 app.delete('/delete-cart', function(req, res) {
     console.log(req.body.idValue);
-    
-    Book.find(function (err, book) {
+
+    Book.find(function(err, book) {
         if (err) {
             return res.status(404).json({
                 message: 'Item not found.'
             });
         }
         Book.remove({
-            idValue: req.body.idValue
-        }, 
-        function () {
-            res.status(201).json(book);
-        });
-});
-    
-    
-    // Book.findByIdAndRemove(req.body.idValue, function(err, book) {
-    //     if (err)
-    //         return res.status(404).json({
-    //             message: 'Item not found.'
-    //         });
-
-    //     res.status(200).json(book);
-    // });
+                idValue: req.body.idValue
+            },
+            function() {
+                res.status(201).json(book);
+            });
+    });
 });
 
 app.use('*', function(req, res) {

@@ -20,6 +20,7 @@ ul {
     -webkit-margin-end: 0px;
     -webkit-padding-start: 0px;
 }
+
 button,
 input {
     background-color: transparent;
@@ -44,23 +45,22 @@ header section.drop button.dropbtn {
 }
 
 header section.drop ul.dropdown-content li {
-display: block;
+    display: block;
 }
 
 header section.drop button.dropbtn img {
     width: 30px;
 }
 
-header section.drop ul.dropdown-content .dropdown  button.clearCartButton {
+header section.drop ul.dropdown-content .dropdown button.clearCartButton {
     padding: 0;
     border: none;
     display: inline-block;
 }
 
-header section.drop ul.dropdown-content .dropdown  button.clearCartButton img {
+header section.drop ul.dropdown-content .dropdown button.clearCartButton img {
     width: 20px;
 }
-
 
 .dropbtn {
     background-color: #4CAF50;
@@ -71,7 +71,8 @@ header section.drop ul.dropdown-content .dropdown  button.clearCartButton img {
     cursor: pointer;
 }
 
-.dropbtn:hover, .dropbtn:focus {
+.dropbtn:hover,
+.dropbtn:focus {
     background-color: #3e8e41;
 }
 
@@ -84,7 +85,7 @@ header section.drop ul.dropdown-content .dropdown  button.clearCartButton img {
     position: absolute;
     background-color: #f9f9f9;
     min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     z-index: 1;
 }
 
@@ -95,7 +96,9 @@ header section.drop ul.dropdown-content .dropdown  button.clearCartButton img {
     display: inline-block;
 }
 
-.dropdown-content a:hover {background-color: #f1f1f1}
+.dropdown-content a:hover {
+    background-color: #f1f1f1
+}
 
 
 /* content styles */
@@ -156,6 +159,7 @@ section.wrapper .bookTitles ul li.bookContain .bookPreview .book-image {
     -moz-box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.75);
     box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.75);
 }
+
 section.wrapper .bookTitles ul li.bookContain .bookPreview .bookInfo {
     height: 75px;
     overflow-y: auto;
@@ -163,6 +167,7 @@ section.wrapper .bookTitles ul li.bookContain .bookPreview .bookInfo {
     margin-bottom: 1rem;
     border-bottom: 1px solid lightgray;
 }
+
 section.wrapper .bookTitles ul li.bookContain .bookTitle h2 {
     height: 75px;
     overflow-y: auto;
@@ -180,7 +185,8 @@ section.wrapper .bookTitles ul li.bookContain .bookPreview form.addBookToCart bu
     margin-top: .4rem;
 }
 
-.dropbtn:hover, .dropbtn:focus {
+.dropbtn:hover,
+.dropbtn:focus {
     background-color: darkorange;
 }
 
@@ -195,15 +201,12 @@ footer {}
 @media only screen and (max-width: 1000px) {
     section.wrapper .bookTitles ul li.bookContain {
         width: 44%;
-        
     }
 }
-
 
 @media only screen and (max-width: 600px) {
     section.wrapper .bookTitles ul li.bookContain {
         width: 100%;
-        
     }
     section.wrapper .bookTitles ul li.bookContain .bookPreview .book-image {
         height: 400px;

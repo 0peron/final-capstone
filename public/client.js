@@ -83,142 +83,133 @@ function displayQuery(data) {
 
 
 //   "<a href='" + book.saleInfo.buyLink + "' target='_blank'></a>"
-$(window).click(function(){
+$(window).click(function() {
     $('.dropdown-content').hide();
 });
 
 function populateCartContainer() {
-$(document).on('click', '.dropbtn', function(event) {
-    event.preventDefault();
-    event.stopPropagation();
-     $('.dropdown-content').show();
-});
+    $(document).on('click', '.dropbtn', function(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        $('.dropdown-content').show();
+    });
     //console.log(searchTerm);
 
-     $.ajax({
-             type: "GET",
-             url: "/populate-cart",
-             dataType: 'json',
-             contentType: 'application/json'
-         })
-         .done(function(data) {
-             //If successful, set some globals instead of using result object
-             console.log(data);
+    $.ajax({
+            type: "GET",
+            url: "/populate-cart",
+            dataType: 'json',
+            contentType: 'application/json'
+        })
+        .done(function(data) {
+            //If successful, set some globals instead of using result object
+            console.log(data);
 
 
-             var addHTML = "";
+            var addHTML = "";
 
-             $.each(data, function(index, book) {
-                 addHTML += "<li class='dropdown'>";
-                 addHTML += "<h2>";
-                 addHTML += "<button class='clearCartButton'>";
-                 addHTML += "<img src='/image/cancel-square.png' class='clear-cart-icon'>";
-                 addHTML += '</button>';
-                 addHTML += "<a href='" + book.link + "' target='_blank'>" + book.name + "</a>";
-                 addHTML += "<input type='hidden' class='deleteIdValue' value='" + book.idValue + "'>";
-                 addHTML += "</h2>";
-                 addHTML += "</li>";
-             });
+            $.each(data, function(index, book) {
+                addHTML += "<li class='dropdown'>";
+                addHTML += "<h2>";
+                addHTML += "<button class='clearCartButton'>";
+                addHTML += "<img src='/image/cancel-square.png' class='clear-cart-icon'>";
+                addHTML += '</button>';
+                addHTML += "<a href='" + book.link + "' target='_blank'>" + book.name + "</a>";
+                addHTML += "<input type='hidden' class='deleteIdValue' value='" + book.idValue + "'>";
+                addHTML += "</h2>";
+                addHTML += "</li>";
+            });
 
-             $(".drop ul").html(addHTML);
-         })
-         .fail(function(jqXHR, error, errorThrown) {
-             console.log(jqXHR);
-             console.log(error);
-             console.log(errorThrown);
-             $('.errorMessage').show();
-             $('.errorMessage p').text("Opps there was an error handeling your request.")
-         });
- }
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- $(document).ready(function() {
-     populateCartContainer();
+            $(".drop ul").html(addHTML);
+        })
+        .fail(function(jqXHR, error, errorThrown) {
+            console.log(jqXHR);
+            console.log(error);
+            console.log(errorThrown);
+            $('.errorMessage').show();
+            $('.errorMessage p').text("Opps there was an error handeling your request.")
+        });
+}
+
+
+$(document).ready(function() {
+    populateCartContainer();
     $('.js-search-form').submit(function(event) {
         event.preventDefault();
         searchTerm = $('.js-query').val();
         console.log('searchTerm =', searchTerm);
         bookApiCall(searchTerm);
-        
+
     });
 });
 
 
 $(document).on('click', '.addToCartButton', function(event) {
-     //if the page refreshes when you submit the form use "preventDefault()" to force JavaScript to handle the form submission
-     event.preventDefault();
-     $('.dropdown-content').show();
-     //get the value from the input box
-     var bookValue = $(this).parent().find('.addToCartBookValue').val();
-     var linkValue = $(this).parent().find('.addToCartLinkValue').val();
-     var idValue =  $(this).parent().find('.addToCartIdValue').val();
-     console.log(bookValue, linkValue);
+    //if the page refreshes when you submit the form use "preventDefault()" to force JavaScript to handle the form submission
+    event.preventDefault();
+    $('.dropdown-content').show();
+    //get the value from the input box
+    var bookValue = $(this).parent().find('.addToCartBookValue').val();
+    var linkValue = $(this).parent().find('.addToCartLinkValue').val();
+    var idValue = $(this).parent().find('.addToCartIdValue').val();
+    console.log(bookValue, linkValue);
 
 
-     var nameObject = {
-         'name': bookValue,
-         'link': linkValue,
-         'idValue': idValue
-     };
+    var nameObject = {
+        'name': bookValue,
+        'link': linkValue,
+        'idValue': idValue
+    };
 
-     $.ajax({
-             method: 'POST',
-             dataType: 'json',
-             contentType: 'application/json',
-             data: JSON.stringify(nameObject),
-             url: '/add-to-cart/'
-         })
-         .done(function(result) {
-             console.log(result);
-             populateCartContainer();
-         })
-         .fail(function(jqXHR, error, errorThrown) {
-             console.log(jqXHR);
-             console.log(error);
-             console.log(errorThrown);
-             $('.errorMessage').show();
-             $('.errorMessage p').text("Opps there was an error handeling your request.")
-         });
- });
+    $.ajax({
+            method: 'POST',
+            dataType: 'json',
+            contentType: 'application/json',
+            data: JSON.stringify(nameObject),
+            url: '/add-to-cart/'
+        })
+        .done(function(result) {
+            console.log(result);
+            populateCartContainer();
+        })
+        .fail(function(jqXHR, error, errorThrown) {
+            console.log(jqXHR);
+            console.log(error);
+            console.log(errorThrown);
+            $('.errorMessage').show();
+            $('.errorMessage p').text("Opps there was an error handeling your request.")
+        });
+});
 
- $(document).on('click', '.clearCartButton', function(event) {
-     //if the page refreshes when you submit the form use "preventDefault()" to force JavaScript to handle the form submission
-     event.preventDefault();
-     event.stopPropagation();
-     $('.dropdown-content').show();
-     console.log('delete fire');
-     var idValue = $(this).parent().find('.deleteIdValue').val();
-     console.log('id value', idValue);
-     
-     var bookid = {
-         idValue: idValue
-     };
+$(document).on('click', '.clearCartButton', function(event) {
+    //if the page refreshes when you submit the form use "preventDefault()" to force JavaScript to handle the form submission
+    event.preventDefault();
+    event.stopPropagation();
+    $('.dropdown-content').show();
+    console.log('delete fire');
+    var idValue = $(this).parent().find('.deleteIdValue').val();
+    console.log('id value', idValue);
 
-     $.ajax({
-             method: 'DELETE',
-             dataType: 'json',
-             contentType: 'application/json',
-             data: JSON.stringify(bookid),
-             url: '/delete-cart',
-         })
-         .done(function(result) {
-             console.log(result);
-             populateCartContainer();
-         })
-         .fail(function(jqXHR, error, errorThrown) {
-             console.log(jqXHR);
-             console.log(error);
-             console.log(errorThrown);
-             $('.errorMessage').show();
-             $('.errorMessage p').text("Opps there was an error handeling your request.")
-         });
- });
+    var bookid = {
+        idValue: idValue
+    };
+
+    $.ajax({
+            method: 'DELETE',
+            dataType: 'json',
+            contentType: 'application/json',
+            data: JSON.stringify(bookid),
+            url: '/delete-cart',
+        })
+        .done(function(result) {
+            console.log(result);
+            populateCartContainer();
+        })
+        .fail(function(jqXHR, error, errorThrown) {
+            console.log(jqXHR);
+            console.log(error);
+            console.log(errorThrown);
+            $('.errorMessage').show();
+            $('.errorMessage p').text("Opps there was an error handeling your request.")
+        });
+});
