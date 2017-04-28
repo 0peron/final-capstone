@@ -8,12 +8,14 @@
 
 
 /* general styles for main body */
-
-body {}
+body {
+    background-color: #47A8BD;
+}
 
 ul {
     display: block;
     list-style-type: disc;
+    color: #613DC1;
     -webkit-margin-before: 0em;
     -webkit-margin-after: 0em;
     -webkit-margin-start: 0px;
@@ -30,6 +32,8 @@ input {
 }
 
 
+
+
 /* header styles */
 
 header {}
@@ -38,6 +42,7 @@ header h1 {
     font-size: 2em;
     margin: 0.67em 0;
     text-align: center;
+    color: #613DC1;
 }
 
 header section.drop button.dropbtn {
@@ -56,6 +61,7 @@ header section.drop ul.dropdown-content .dropdown button.clearCartButton {
     padding: 0;
     border: none;
     display: inline-block;
+    color: transparent;
 }
 
 header section.drop ul.dropdown-content .dropdown button.clearCartButton img {
@@ -63,7 +69,7 @@ header section.drop ul.dropdown-content .dropdown button.clearCartButton img {
 }
 
 .dropbtn {
-    background-color: #4CAF50;
+    background-color: #1E3888;
     color: white;
     padding: 16px;
     font-size: 16px;
@@ -113,7 +119,10 @@ section.container form {
     margin-bottom: 3rem;
 }
 
-section.wrapper {}
+section.wrapper .errorMessage{
+    text-align: center;
+    color: red;
+}
 
 section.wrapper .bookTitles ul {
     width: 80%;
@@ -131,6 +140,10 @@ section.wrapper .bookTitles ul li.bookContain {
     margin-right: 1%;
     border-radius: 8px;
     box-shadow: 5px 5px grey;
+}
+
+section.wrapper .bookTitles ul li.bookContain:hover {
+    color: #613DC1;
 }
 
 section.wrapper .bookTitles ul li.bookContain .bookPreview .button {
@@ -165,7 +178,7 @@ section.wrapper .bookTitles ul li.bookContain .bookPreview .bookInfo {
     overflow-y: auto;
     margin-top: 1rem;
     margin-bottom: 1rem;
-    border-bottom: 1px solid lightgray;
+    border-bottom: 1px #4E148C;
 }
 
 section.wrapper .bookTitles ul li.bookContain .bookTitle h2 {
@@ -174,6 +187,7 @@ section.wrapper .bookTitles ul li.bookContain .bookTitle h2 {
     margin-top: 1rem;
     margin-bottom: 1rem;
     border-bottom: 1px solid lightgray;
+    color: #4E148C;
 }
 
 section.wrapper .bookTitles ul li.bookContain .description {
@@ -183,6 +197,10 @@ section.wrapper .bookTitles ul li.bookContain .description {
 
 section.wrapper .bookTitles ul li.bookContain .bookPreview form.addBookToCart button.addToCartButton {
     margin-top: .4rem;
+}
+
+section.wrapper .bookTitles ul li.bookContain .bookPreview form.addBookToCart button.addToCartButton:hover {
+   color: #613DC1; 
 }
 
 .dropbtn:hover,
