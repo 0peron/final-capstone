@@ -9,6 +9,4 @@ addons:
     packages:
     - mongodb-org-server
 script:
-- npm run build:server:production
-- npm run build:client:production
 - npm test

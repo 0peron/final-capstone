@@ -115,9 +115,30 @@ section.container {}
 
 section.container form {
     display: block;
-    text-align: center;
+    text-align: left;
     margin-bottom: 3rem;
+    width: 20%;
+    margin-left: auto;
+    margin-right: auto;
 }
+
+section.container form label {
+    color: #1E3888;
+    font-size: large;
+    display: block;
+}
+
+section.container form input {
+    color: #D9DCD6;
+}
+
+section.container form button {
+    color: #D9DCD6;
+}
+section.container form button:hover {
+    background-color: #613DC1 ;
+}
+
 
 section.wrapper .errorMessage{
     text-align: center;
@@ -142,8 +163,8 @@ section.wrapper .bookTitles ul li.bookContain {
     box-shadow: 5px 5px grey;
 }
 
-section.wrapper .bookTitles ul li.bookContain:hover {
-    color: #613DC1;
+section.wrapper .bookTitles ul li.bookContain {
+    color: #1E3888;
 }
 
 section.wrapper .bookTitles ul li.bookContain .bookPreview .button {
@@ -199,7 +220,7 @@ section.wrapper .bookTitles ul li.bookContain .bookPreview form.addBookToCart bu
     margin-top: .4rem;
 }
 
-section.wrapper .bookTitles ul li.bookContain .bookPreview form.addBookToCart button.addToCartButton:hover {
+section.wrapper .bookTitles ul li.bookContain .bookPreview form.addBookToCart button:hover {
    color: #613DC1; 
 }
 
