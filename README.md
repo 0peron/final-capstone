@@ -24,10 +24,10 @@ This apps functionality includes:
 * Allows users to remove books from the shopping cart.
 ![screenshot](https://0peron.github.io/final-capstone/public/image/bookSearch.png)
 
-##Live Site
+## Live Site
 You can access Deweybooks at: (https://final-capstone.herokuapp.com/)
 
-##Technical
+## Technical
  * The front-end is built using HTML5, CSS3 and ExpressJS, the back-end using NodeJS with ExpressJS as the web server and MongoDB as the database.
  * The app is fully responsive, adapting for mobile, table and desktop viewports.
  * E2E testing has been accomplished through the use of travis.cl
