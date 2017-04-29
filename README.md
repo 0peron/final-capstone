@@ -14,15 +14,15 @@ Users can quickly be directed to previw the first few chapters, as well as be di
 This apps functionality includes: 
 
 - A comprehensive search that allows users to search for books in the google api.
-![screenshot](https://0peron.github.io/node-movie-capstone/public/images/index.png)
+![screenshot](https://0peron.github.io/final-capstone/public/image/bookSearch.png)
 -a description of up to 12 matching book titles.
-![screenshot](https://0peron.github.io/node-movie-capstone/public/images/search.png)
+![screenshot](https://0peron.github.io/final-capstone/public/image/BookPreview.png)
 -shows author and genre information as well as a thumbnail of the book cover.
 -Provides a link to a preview of the book. most books have the first chapter available.
 -allows users to add books to their shopping cart for easy access and to mark books of interest to return to later.
 -allows users to buy books by linking to the google book buy page from the shopping cart.
 -allows users to remove books from the shopping cart.
-![screenshot](https://0peron.github.io/node-movie-capstone/public/images/favorites.png)
+![screenshot](https://0peron.github.io/final-capstone/public/image/bookSearch.png)
 
 ##Live Site
 You can access Deweybooks at: https://final-capstone.herokuapp.com/
