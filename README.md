@@ -13,15 +13,15 @@ Users can quickly be directed to previw the first few chapters, as well as be di
 ##Functionality
 This apps functionality includes: 
 
-- A comprehensive search that allows users to search for books in the google api.
+A comprehensive search that allows users to search for books in the google api.
 ![screenshot](https://0peron.github.io/final-capstone/public/image/bookSearch.png)
--a description of up to 12 matching book titles.
+A Description of up to 12 matching book titles.
+Shows author and genre information as well as a thumbnail of the book cover.
+Provides a link to a preview of the book. most books have the first chapter available.
 ![screenshot](https://0peron.github.io/final-capstone/public/image/BookPreview.png)
--shows author and genre information as well as a thumbnail of the book cover.
--Provides a link to a preview of the book. most books have the first chapter available.
--allows users to add books to their shopping cart for easy access and to mark books of interest to return to later.
--allows users to buy books by linking to the google book buy page from the shopping cart.
--allows users to remove books from the shopping cart.
+Allows users to add books to their shopping cart for easy access and to mark books of interest to return to later.
+Allows users to buy books by linking to the google book buy page from the shopping cart.
+Allows users to remove books from the shopping cart.
 ![screenshot](https://0peron.github.io/final-capstone/public/image/bookSearch.png)
 
 ##Live Site
