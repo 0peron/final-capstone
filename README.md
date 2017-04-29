@@ -22,7 +22,7 @@ This apps functionality includes:
 * Allows users to add books to their shopping cart for easy access and to mark books of interest to return to later.
 * Allows users to buy books by linking to the google book buy page from the shopping cart.
 * Allows users to remove books from the shopping cart.
-![screenshot](https://0peron.github.io/final-capstone/public/image/bookSearch.png)
+![screenshot](https://0peron.github.io/final-capstone/public/image/bookCart.png)
 
 ## Live Site
 You can access Deweybooks at: (https://final-capstone.herokuapp.com/)
