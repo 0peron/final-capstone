@@ -8,6 +8,7 @@
 
 
 /* general styles for main body */
+
 body {
     background-color: #47A8BD;
 }
@@ -30,8 +31,6 @@ input {
     border: 1px solid black;
     padding: .2rem 0.5rem;
 }
-
-
 
 
 /* header styles */
@@ -135,12 +134,12 @@ section.container form input {
 section.container form button {
     color: #D9DCD6;
 }
+
 section.container form button:hover {
-    background-color: #613DC1 ;
+    background-color: #613DC1;
 }
 
-
-section.wrapper .errorMessage{
+section.wrapper .errorMessage {
     text-align: center;
     color: red;
 }
@@ -221,7 +220,7 @@ section.wrapper .bookTitles ul li.bookContain .bookPreview form.addBookToCart bu
 }
 
 section.wrapper .bookTitles ul li.bookContain .bookPreview form.addBookToCart button:hover {
-   color: #613DC1; 
+    color: #613DC1;
 }
 
 .dropbtn:hover,
@@ -241,9 +240,11 @@ footer {}
     section.wrapper .bookTitles ul li.bookContain {
         width: 44%;
     }
-    
     section.container form {
         text-align: center;
+    }
+    section.container form button {
+        margin-top: .3rem;
     }
 }
 
@@ -256,8 +257,5 @@ footer {}
     }
     section.container form {
         text-align: center;
-    }
-    section.container form button {
-        margin-top: .3rem; 
     }
 }
