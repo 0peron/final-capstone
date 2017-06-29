@@ -36,6 +36,8 @@ function bookApiCall(searchTerm) {
         })
         .done(function(result) {
             console.log(result);
+            $('.landing').hide();
+            $('.errorMessage').hide();
             displayQuery(result);
         })
         .fail(function(jqXHR, error, errorThrown) {
@@ -82,7 +84,6 @@ function displayQuery(data) {
 
 
 
-//   "<a href='" + book.saleInfo.buyLink + "' target='_blank'></a>"
 $(window).click(function() {
     $('.dropdown-content').hide();
 });
@@ -93,7 +94,6 @@ function populateCartContainer() {
         event.stopPropagation();
         $('.dropdown-content').show();
     });
-    //console.log(searchTerm);
 
     $.ajax({
             type: "GET",
@@ -118,8 +118,8 @@ function populateCartContainer() {
                 addHTML += "<input type='hidden' class='deleteIdValue' value='" + book.idValue + "'>";
                 addHTML += "</h2>";
                 addHTML += "</li>";
+                alert(book.name + ' added to cart');
             });
-
             $(".drop ul").html(addHTML);
         })
         .fail(function(jqXHR, error, errorThrown) {

@@ -5,26 +5,48 @@
     <title>final capstone</title>
     <link rel="stylesheet" href="normalize.css">
     <link rel="stylesheet" href="main.css">
+    <link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
 </head>
 
 <body>
     <header>
         <h1>DeweyBooks</h1>
         <section class='drop'>
-                    <button class='dropbtn' input type='button'>
+            <button class='dropbtn' input type='button'>
                     <img src='/image/shopping-cart.png' class='cart-icon' alt='cart'>
                     </button>
-                <ul class='dropdown-content'>
+            <ul class='dropdown-content'>
 
-                </ul>
+            </ul>
+        </section>
+        <section class='container'>
+            <form action="#" class="js-search-form">
+                <label for="query">Search for a Book</label>
+                <input type="text" id="query" class="js-query" placeholder="Book Title">
+                <button type="submit" class="bookSearch">Search</button>
+            </form>
         </section>
     </header>
-    <section class='container'>
-        <form action="#" class="js-search-form">
-            <label for="query">Search for a Book</label>
-            <input type="text" id= "query" class="js-query" placeholder="Book Title" value="TwentyYearsAfter">
-            <button type="submit" class="bookSearch">Search</button>
-        </form>
+
+    <section class='landing'>
+        <h1> Search. Read. Shelf. </h1>
+        <p>Start your new adventure here</p>
+        
+        <div class='one'>
+            <h2>Search</h2>
+            <img src="image/searchbook.png"></img>
+            <p>Search for a book that you might be interested in reading.</p>
+        </div>
+        <div class='two'>
+            <h2>Read</h2>
+            <img src="image/book-open-flat.png"></img>
+            <p>After you have searched for a book you can get a discription and can be directed to a place to purchase your new book. Once you get the book you can read it and add it to your Shelf.</p>
+        </div>
+        <div class='three'>
+            <h2>Shelf</h2>
+            <img src="image/shelf.png"></img>
+            <p> Once you find a book you like you can add it to your self and add it to your read, or not read yet piles. Here you can also rate the book and leave some notes about it.</p>
+        </div>
     </section>
     <section class='wrapper'>
         <div class='errorMessage'>

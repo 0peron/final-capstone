@@ -4,6 +4,7 @@
     margin: 0;
     padding: 0;
     font-size: 100%;
+    font-family: 'Inconsolata', monospace;
 }
 
 
@@ -35,13 +36,20 @@ input {
 
 /* header styles */
 
-header {}
+header {
+    border-bottom: 1px solid;
+    width: 100%;
+    
+}
 
 header h1 {
     font-size: 2em;
     margin: 0.67em 0;
     text-align: center;
     color: #613DC1;
+}
+header section.drop {
+    float: right;
 }
 
 header section.drop button.dropbtn {
@@ -66,6 +74,38 @@ header section.drop ul.dropdown-content .dropdown button.clearCartButton {
 header section.drop ul.dropdown-content .dropdown button.clearCartButton img {
     width: 20px;
 }
+
+header section.container {
+    text-align: center;
+}
+
+header section.container form {
+    display: block;
+    text-align: left;
+    margin-bottom: 3rem;
+    width: 22%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+header section.container form label {
+    color: #1E3888;
+    font-size: large;
+    display: block;
+}
+
+header section.container form input {
+    color: #D9DCD6;
+}
+
+header section.container form button {
+    color: #D9DCD6;
+}
+
+header section.container form button:hover {
+    background-color: #613DC1;
+}
+
 
 .dropbtn {
     background-color: #1E3888;
@@ -110,35 +150,73 @@ header section.drop ul.dropdown-content .dropdown button.clearCartButton img {
 
 section {}
 
-section.container {}
-
-section.container form {
+section.landing {
     display: block;
-    text-align: left;
-    margin-bottom: 3rem;
-    width: 22%;
+    text-align: center;
+    width: 60%;
+    height: 700px;
+    border: 1px solid;
     margin-left: auto;
     margin-right: auto;
+    background-color: white;
+    margin-top: 100px;
+    font-size: 110%;
 }
 
-section.container form label {
-    color: #1E3888;
-    font-size: large;
+section.landing p {
+    margin-bottom: 20px;
+}
+
+section.landing img {
+    width: 100px;
     display: block;
+    float: left;
 }
 
-section.container form input {
-    color: #D9DCD6;
+section.landing h2 {
+    font-size: 200%;
+    margin-bottom: 20px;
 }
 
-section.container form button {
-    color: #D9DCD6;
+section.landing .one {
+    margin-bottom: 100px;
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
 }
 
-section.container form button:hover {
-    background-color: #613DC1;
+section.landing .one p {
+    width: 90%;
 }
 
+section.landing .two {
+    margin-bottom: 100px;
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+section.landing .two p {
+    width: 90%;
+}
+
+section.landing .three {
+    margin-bottom: 100px;
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+section.landing .three p {
+    width: 90%;
+}
+
+section.warpper {
+    
+}
 section.wrapper .errorMessage {
     text-align: center;
     color: red;
