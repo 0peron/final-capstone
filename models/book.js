@@ -13,6 +13,14 @@ var bookSchema = new mongoose.Schema({
     link: {
         type: String,
         required: false
+    },
+    description: {
+        type: String,
+        required: false
+    },
+    image: {
+        type: String,
+        required: false
     }
 
 });

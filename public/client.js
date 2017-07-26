@@ -14,7 +14,6 @@ function validateUrl(url) {
 }
 
 function validateText(text) {
-    console.log(text);
     var output = '';
     // if ((text == '') || (text == null) || (text == undefined) || (typeof text == undefined) || (text) || (text.length == 0)) {
     if (text === undefined) {
@@ -73,6 +72,8 @@ function displayQuery(data) {
         addHTML += "<input type='hidden' class='addToCartBookValue' value='" + book.volumeInfo.title + "'>";
         addHTML += "<input type='hidden' class='addToCartLinkValue' value='" + book.volumeInfo.canonicalVolumeLink + "'>";
         addHTML += "<input type='hidden' class='addToCartIdValue' value='" + book.id + "'>";
+        addHTML += "<input type='hidden' class='addToCartImgValue' value='" + book.volumeInfo.imageLinks.thumbnail + "'>";
+        addHTML += "<input type='hidden' class='addToCartDesValue' value='" + book.volumeInfo.description + "'>";
         addHTML += "<button class='addToCartButton' type='submit'>";
         addHTML += "add to cart";
         addHTML += "</button>";
@@ -152,13 +153,17 @@ $(document).on('click', '.addToCartButton', function(event) {
     var bookValue = $(this).parent().find('.addToCartBookValue').val();
     var linkValue = $(this).parent().find('.addToCartLinkValue').val();
     var idValue = $(this).parent().find('.addToCartIdValue').val();
-    console.log(bookValue, linkValue);
+    var imgValue = $(this).parent().find('.addToCartImgValue').val();
+    var desValue = $(this).parent().find('.addToCartDesValue').val();
+    console.log(bookValue, linkValue, imgValue);
 
 
     var nameObject = {
         'name': bookValue,
         'link': linkValue,
-        'idValue': idValue
+        'idValue': idValue,
+        'description': desValue,
+        'image': imgValue
     };
 
     $.ajax({
@@ -169,7 +174,7 @@ $(document).on('click', '.addToCartButton', function(event) {
             url: '/add-to-cart/'
         })
         .done(function(result) {
-            console.log(result);
+            console.log('result', result);
             populateCartContainer();
         })
         .fail(function(jqXHR, error, errorThrown) {
