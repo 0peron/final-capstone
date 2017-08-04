@@ -4,6 +4,7 @@ var bodyParser = require('body-parser');
 var jsonParser = bodyParser.json();
 var http = require('http');
 var Book = require('./models/book');
+var Comment = require('./models/comment');
 
 /*api resources*/
 var unirest = require('unirest');
@@ -144,6 +145,64 @@ app.delete('/delete-cart', function(req, res) {
             });
     });
 });
+
+app.get('/populate-notes', function(req, res) {
+    Comment.find(function(err, notes) {
+        if (err) {
+            return res.status(500).json({
+                message: 'Internal Server Error'
+            });
+        }
+        res.status(200).json(notes);
+    });
+});
+
+app.post('/add-to-comment', function(req, res) {
+    console.log('comment', req.body.text);
+    var requiredFields = ['text'];
+    for (var i = 0; i < requiredFields.length; i++) {
+        var field = requiredFields[i];
+        if (!(field in req.body)) {
+            var message = 'Missing `' + field + '` in request body';
+            console.error(message);
+            return res.status(400).send(message);
+        }
+    }
+
+    Comment.create({
+            text: req.body.text,
+            Commentid: req.body.commentId,
+        },
+        function(err, notes) {
+            if (err) {
+                return res.status(500).json({
+                    message: err
+                });
+            }
+            res.status(201).json(notes);
+        });
+
+});
+
+app.delete('/delete-comment', function(req, res) {
+    console.log(req.body.commentId);
+
+    Comment.find(function(err, notes) {
+        if (err) {
+            return res.status(404).json({
+                message: 'Item not found.'
+            });
+        }
+        Comment.remove({
+                idValue: req.body.commentId
+            },
+            function() {
+                res.status(201).json(notes);
+            });
+    });
+});
+
+
 
 app.use('*', function(req, res) {
     res.status(404).json({
