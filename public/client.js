@@ -185,7 +185,7 @@ $(document).ready(function() {
         });
 }
 
-$(document).on('click', '.addComment', function(event) {
+$('body').on('click', '.addComment', function(event) {
     event.preventDefault();
     var commentValue = $(this).parent().find('.userComment').val();
     var commentId = $(this).parent().find('.delcommentId').val();
@@ -215,7 +215,7 @@ $(document).on('click', '.addComment', function(event) {
         });
 });
 
-$(document).on('click', '.addToCartButton', function(event) {
+$('body').on('click', '.addToCartButton', function(event) {
     //if the page refreshes when you submit the form use "preventDefault()" to force JavaScript to handle the form submission
     event.preventDefault();
     //get the value from the input box
@@ -257,7 +257,7 @@ $(document).on('click', '.addToCartButton', function(event) {
 });
 
 
-$(document).on('click', '.clearCartButton', function(event) {
+$('body').on('click', '.clearCartButton', function(event) {
     //if the page refreshes when you submit the form use "preventDefault()" to force JavaScript to handle the form submission
     event.preventDefault();
     event.stopPropagation();
@@ -288,7 +288,7 @@ $(document).on('click', '.clearCartButton', function(event) {
         });
 });
 
-$(document).on('click', '.delComment', function(event) {
+$('body').on('click', '.delComment', function(event) {
     //if the page refreshes when you submit the form use "preventDefault()" to force JavaScript to handle the form submission
     event.preventDefault();
     event.stopPropagation();
