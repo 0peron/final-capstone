@@ -144,19 +144,8 @@ $(document).ready(function() {
         bookApiCall(searchTerm);
 
     });
-});
-
-$(document).ready(function() {
-     populateNotes();
-    $('.commentInput').submit(function(event) {
-        event.preventDefault();
-        var notes = $('.userComment').val();
-        populateNotes(notes);
-    });
-});
-
-function populateNotes(index) {
-    $(document).on('click', '.addComment', function(event) {
+    function populateNotes(index) {
+    $('body').on('click', '.addComment' + index, function(event) {
         event.preventDefault();
         event.stopPropagation();
     });
@@ -329,3 +318,11 @@ $(document).on('click', '.delComment', function(event) {
             $('.errorMessage p').text("Opps there was an error handeling your request.")
         });
 });
+    $('.commentInput').submit(function(event) {
+        event.preventDefault();
+        var notes = $('.userComment').val();
+        populateNotes(notes);
+    });
+});
+
+
