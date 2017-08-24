@@ -147,7 +147,7 @@ app.delete('/delete-cart', function(req, res) {
 });
 
 app.get('/populate-notes', function(req, res) {
-    Comment.find(function(err, notes) {
+    Book.find(function(err, notes) {
         if (err) {
             return res.status(500).json({
                 message: 'Internal Server Error'
@@ -183,6 +183,54 @@ app.post('/add-to-comment', function(req, res) {
         });
 
 });
+
+// app.post('/add-to-comment', function(req, res) {
+//     console.log('comment', req.body.text);
+//     var requiredFields = ['text'];
+//     for (var i = 0; i < requiredFields.length; i++) {
+//         var field = requiredFields[i];
+//         if (!(field in req.body)) {
+//             var message = 'Missing `' + field + '` in request body';
+//             console.error(message);
+//             return res.status(400).send(message);
+//         }
+//     }
+
+//     Comment.create({
+//             text: req.body.notes,
+//             _id: req.body._id,
+//         },
+//         function(err, notes, book) {
+//             if (err) {
+//                 return res.status(500).json({
+//                     message: err
+//                 });
+//             }
+//             //  Book
+//             //  .findOne({idValue: req.body.bookId})
+//             //  .exec(function(error, book){
+//             //  book.notes.push(notes) {
+//             //     book.save(function(err){
+//             //      if (err) {
+//             //          return res.status(500).json({
+//             //         message: err
+//             //     });
+//             //  });
+//             //  }}
+         
+//             res.status(201).json(notes);
+//         });
+   
+    // populate('notes').
+    // exec(function (err, book){
+    //     if (err) return res.status(500).json({
+    //         message:err
+    //     });
+    //     console.log('The note is %s', book.notes.notes);
+    // });
+
+// });
+    
 
 app.delete('/delete-comment', function(req, res) {
     console.log(req.body.commentId);

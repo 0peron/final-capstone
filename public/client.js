@@ -3,8 +3,6 @@ var searchTerm = "";
 function validateUrl(url) {
     var output = '';
     if (url === undefined) {
-        // if ((url != '') || (url != null) || (url != undefined) || (typeof url != undefined) || (url)) {
-
         output = 'image/image-not-found.jpg';
     }
     else {
@@ -15,7 +13,6 @@ function validateUrl(url) {
 
 function validateText(text) {
     var output = '';
-    // if ((text == '') || (text == null) || (text == undefined) || (typeof text == undefined) || (text) || (text.length == 0)) {
     if (text === undefined) {
         output = 'No Description Available';
     }
@@ -72,8 +69,8 @@ function displayQuery(data) {
         addHTML += "<input type='hidden' class='addToCartBookValue' value='" + book.volumeInfo.title + "'>";
         addHTML += "<input type='hidden' class='addToCartLinkValue' value='" + book.volumeInfo.canonicalVolumeLink + "'>";
         addHTML += "<input type='hidden' class='addToCartIdValue' value='" + book.id + "'>";
-        addHTML += "<input type='hidden' class='addToCartImgValue' value='" + book.volumeInfo.imageLinks.thumbnail + "'>";
-        addHTML += "<input type='hidden' class='addToCartDesValue' value='" + book.volumeInfo.description + "'>";
+        addHTML += "<input type='hidden' class='addToCartImgValue' value='" + validateUrl(book.volumeInfo.imageLinks) + "'>";
+        addHTML += "<input type='hidden' class='addToCartDesValue' value='" + validateText(book.volumeInfo.description) + "'>";
         addHTML += "<button class='addToCartButton' type='submit'>";
         addHTML += "add to Shelf";
         addHTML += "</button>";
@@ -99,6 +96,7 @@ function populateCartContainer() {
             var addHTML = "";
 
             $.each(data, function(index, book) {
+                console.log('book:', book);
                 addHTML += "<li class='itemContain'>";
                 addHTML += "<div class = 'bookImg'>";
                 addHTML += "<a href='" + book.link + "' target='_blank'>";
@@ -114,12 +112,15 @@ function populateCartContainer() {
                 addHTML += "<div class='bookDescription'>";
                 addHTML += "<p>" + book.description + "</p>";
                 addHTML += "</div>";
+                addHTML += "<div class ='textBox'>";
                 addHTML += "<ul class='userNotes-" + index + "'>";
                 addHTML += "</ul>";
                 addHTML += "<form class='commentInput'>";
-                addHTML += "<input type='text' id='uComment' class='userComment' placeholder='Add Notes'>";
-                addHTML += "<button class='addComment'>Add</button>";
+                addHTML += "<input type='text' class='userComment' placeholder='Add Notes'>";
+                addHTML += "<input type='hidden' class='comId' value='" + book.idValue + "'>";
+                addHTML += "<button class='addComment' id="+ book.idValue + ">Add</button>";
                 addHTML += "</form>";
+                addHTML += "</div>";
                 addHTML += "<input type='hidden' class='deleteIdValue' value='" + book.idValue + "'>";
                 addHTML += "</li>";
             });
@@ -134,21 +135,7 @@ function populateCartContainer() {
         });
 }
 
-
-$(document).ready(function() {
-    populateCartContainer();
-    $('.js-search-form').submit(function(event) {
-        event.preventDefault();
-        searchTerm = $('.js-query').val();
-        console.log('searchTerm =', searchTerm);
-        bookApiCall(searchTerm);
-
-    });
-    function populateNotes(index) {
-    $('body').on('click', '.addComment' + index, function(event) {
-        event.preventDefault();
-        event.stopPropagation();
-    });
+function populateNotes(index, book) {
 
     $.ajax({
             type: "GET",
@@ -160,19 +147,21 @@ $(document).ready(function() {
             //If successful, set some globals instead of using result object
             console.log(data);
             console.log(data.length, 'comments');
+            console.log(book);
             
-            $.each(data, function(index, comment) {
+            $.each(data, function(index, comment, book) {
+                console.log('comment:', comment);
                 var addHTML = "";
-                $('.userNotes-' + index).html("")
+                $('.userNotes-' + index).html("");
                 addHTML += "<li class='noteContain'>";
                 addHTML += "<div class = 'addedNote'>";
-                addHTML += "<p>" + comment.text + "</p>";
+                addHTML += "<p class = 'text'>" + comment.text + "</p>";
                 addHTML += "<button class='delComment'>Remove</button>";
                 addHTML += "</div>";
                 addHTML += "<input type='hidden' class='delCommentId' value='" + comment._id + "'>";
                 addHTML += "</li>";
                 $(".userNotes-" + index).append(addHTML);
-                console.log('gethere', comment.text, index);
+                console.log('gethere', comment.notes, index);
                 console.log(comment._id);
             });
         })
@@ -185,16 +174,29 @@ $(document).ready(function() {
         });
 }
 
+
+$(document).ready(function() {
+    populateCartContainer();
+    populateNotes();
+    $('.js-search-form').submit(function(event) {
+        event.preventDefault();
+        searchTerm = $('.js-query').val();
+        console.log('searchTerm =', searchTerm);
+        bookApiCall(searchTerm);
+
+    });
 $('body').on('click', '.addComment', function(event) {
     event.preventDefault();
     var commentValue = $(this).parent().find('.userComment').val();
-    var commentId = $(this).parent().find('.delcommentId').val();
-    console.log("comment", commentValue ,'id:', commentId);
+    var _id = $(this).parent().find('.delcommentId').val();
+    console.log("comment", commentValue ,'id:', _id);
     
     var commentObject = {
         'text': commentValue,
-        'commentId': commentId
+        '_id': _id,
+        'bookId': event.target.id
     };
+    
     $.ajax({
         method: 'POST',
         dataType: 'json',
@@ -292,11 +294,11 @@ $('body').on('click', '.delComment', function(event) {
     //if the page refreshes when you submit the form use "preventDefault()" to force JavaScript to handle the form submission
     event.preventDefault();
     event.stopPropagation();
-    var commentId = $(this).parent().find('.delCommentId').val();
-    console.log('noteId value', commentId);
+    var _id = $(this).parent().find('.delCommentId').val();
+    console.log('noteId value', _id);
 
     var comments = {
-        commentId: commentId
+        _id: _id
     };
 
     $.ajax({
@@ -324,5 +326,3 @@ $('body').on('click', '.delComment', function(event) {
         populateNotes(notes);
     });
 });
-
-

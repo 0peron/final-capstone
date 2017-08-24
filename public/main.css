@@ -25,10 +25,8 @@ ul {
     -webkit-padding-start: 0px;
 }
 
-button,
 input {
     background-color: transparent;
-    border-radius: 8px;
     border: 1px solid black;
     padding: .2rem 0.5rem;
 }
@@ -58,12 +56,10 @@ header section.container {
 
 header section.container form {
     display: block;
-    text-align: left;
     margin-bottom: 3rem;
-    width: 22%;
+    width: 25%;
     margin-left: auto;
     margin-right: auto;
-    text-align: center;
 }
 
 header section.container form label {
@@ -77,11 +73,16 @@ header section.container form input {
 }
 
 header section.container form button {
-    color: #D9DCD6;
+    font: bold 11px Arial;
+    text-decoration: none;
+    background-color: #613DC1;
+    color: white;
+    padding: .2rem 0.5rem;
+    text-align: center;
 }
 
 header section.container form button:hover {
-    background-color: #613DC1;
+    color: aqua;
 }
 
 .navRight {
@@ -205,28 +206,29 @@ section.wrapper .bookTitles ul li.bookContain {
     width: 22%;
     vertical-align: top;
     border: 1px solid black;
+    margin-top: 4rem;
     margin-bottom: 1rem;
     margin-left: 1%;
     padding: 1rem;
     margin-right: 1%;
-    border-radius: 8px;
     box-shadow: 5px 5px grey;
-}
-
-section.wrapper .bookTitles ul li.bookContain {
     color: #1E3888;
+    background-color: floralwhite;
 }
 
 section.wrapper .bookTitles ul li.bookContain .bookPreview .button {
     font: bold 11px Arial;
     text-decoration: none;
-    background-color: transparent;
-    border-radius: 8px;
-    border: 1px solid black;
+    background-color: #613DC1;
+    color: white;
     padding: .2rem 0.5rem;
     display: block;
     width: 43%;
     text-align: center;
+}
+
+section.wrapper .bookTitles ul li.bookContain .bookPreview .button:hover {
+    color: aqua;
 }
 
 section.wrapper .bookTitles ul li.bookContain .bookPreview .book-image {
@@ -268,10 +270,19 @@ section.wrapper .bookTitles ul li.bookContain .description {
 
 section.wrapper .bookTitles ul li.bookContain .bookPreview form.addBookToCart button.addToCartButton {
     margin-top: .4rem;
+    background-color: #613DC1;
+    font: bold 11px Arial;
+    text-decoration: none;
+    background-color: #613DC1;
+    color: white;
+    padding: .2rem 0.5rem;
+    display: block;
+    width: 43%;
+    text-align: center;
 }
 
 section.wrapper .bookTitles ul li.bookContain .bookPreview form.addBookToCart button:hover {
-    color: #613DC1;
+    color: aqua;
 }
 
 section.shelf ul.shelfItems {
@@ -315,12 +326,42 @@ section.shelf ul.shelfItems li.itemContain .bookDescription {
     padding-left: 20px;
 }
 
-section.shelf ul.shelfItems li.itemContain ul.userNotes- {
+section.shelf ul.shelfItems li.itemContain ul {
     list-style-type: none;
+    margin-top: 5px;
 }
 
 section.shelf ul.shelfItems li.itemContain .commentInput {
     margin-top: 100px;
+}
+
+.textbox p {
+    
+}
+
+.addComment {
+    font: bold 11px Arial !important; 
+    text-decoration: none !important;
+    background-color: #613DC1 !important;
+    color: white !important;
+    padding: .2rem 0.5rem !important;
+    text-align: center !important;
+    margin-left: 2px !important;
+}
+
+.delComment {
+    font: bold 11px Arial !important; 
+    text-decoration: none !important;
+    background-color: #613DC1 !important;
+    color: white !important;
+    padding: .2rem 0.5rem !important;
+    text-align: center !important;
+    margin-left: 2px !important;
+}
+
+.delComment:hover,
+.addComment:hover {
+    color: aqua !important;
 }
 
 button.clearCartButton {
@@ -332,8 +373,8 @@ button.clearCartButton {
 
 button.clearCartButton img {
     width: 20px;
+    color: transparent;
 }
-
 /* footer styles */
 
 footer {}
