@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+    <title>final capstone</title>
+    <link rel="stylesheet" href="normalize.css">
+    <link rel="stylesheet" href="main.css">
+    <link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <h1>DeweyBooks</h1>
+        <nav class='navRight'>
+            <ul>
+                <li>
+                    <a href="index.html">Home</a>
+                </li>
+                <li>
+                    <a href="shelf.html">Shelf</a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class='signup'>
+        <div class='login'>
+            <form class="log" id="log">
+                <label for="query"></label>
+                <input type="text" class="js-user" placeholder="Username">
+                <input type="password" class="js-password" placeholder="Password">
+                <button type="submit" class="logButton">Login</button>
+            </form>
+            <a class="reg">Register?</a>
+        </div>
+        <div class='register'>
+            <p>Register</p>
+            <form class="create" id="create">
+                <label for="query"></label>
+                <input type="text" class="js-userReg" placeholder="Username">
+                <input type="password" class="js-passwordReg" placeholder="Password">
+                <button type="submit" class="logButton">Register</button>
+            </form>
+        </div>
+    </section>
+
+    <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
+    <script src="client.js"></script>
+</body>
+
+</html>

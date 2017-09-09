@@ -5,6 +5,7 @@ var jsonParser = bodyParser.json();
 var http = require('http');
 var Book = require('./models/book');
 var Comment = require('./models/comment');
+var Users = require("./models/users");
 
 /*api resources*/
 var unirest = require('unirest');
@@ -257,6 +258,87 @@ app.use('*', function(req, res) {
         message: 'Not Found'
     });
 });
+
+//login//
+
+app.post('/login', function(req, res) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    var userName = req.body.userName;
+    var password = req.body.password;
+    console.log(userName, password);
+    Users.findOne({
+        userName: userName,
+        password: password
+    }, function(err, users) {
+        if (err) {
+            return res.status(500).json({
+                message: 'Internal Server Error'
+            });
+        }
+        if (!users) {
+            //bad username
+            return res.status(401).json({
+                message: 'Not found'
+            });
+        }
+        else {
+            console.log('validatePassword');
+            Users.schema.methods.validatePassword(password, function(err, isValid) {
+                console.log(err, isValid, 'hello');
+                if (err) {
+                    console.log(err);
+                }
+                if (!isValid) {
+                    return res.status(401).json({
+                        message: 'Not found'
+                    });
+                }
+                else {
+                    console.log("User: " + userName + " logged in.");
+                    return res.json(users);
+                }
+                //return something here
+
+            });
+        }
+    });
+});
+
+//create new users//
+
+app.post('/users', function(req, res) {
+    var requiredFields = ['userName', 'password'];
+    for (var i = 0; i < requiredFields.length; i++) {
+        var field = requiredFields[i];
+        if (!(field in req.body)) {
+            var message = 'Missing `' + field + '` in request body';
+            console.error(message);
+            return res.status(400).send(message);
+        }
+    }
+
+    Users.create({
+        userName: req.body.userName,
+        password: req.body.password
+    }, function(err, user) {
+        if (err) {
+            return res.status(500).json({
+                message: err
+            });
+        }
+        res.status(201).json(user);
+    });
+
+});
+
+//logout//
+
+app.get('/logout', function(req, res) {
+    req.logout();
+    res.redirect('/');
+});
+
 
 exports.app = app;
 exports.runServer = runServer;

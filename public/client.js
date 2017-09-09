@@ -118,7 +118,7 @@ function populateCartContainer() {
                 addHTML += "<form class='commentInput'>";
                 addHTML += "<input type='text' class='userComment' placeholder='Add Notes'>";
                 addHTML += "<input type='hidden' class='comId' value='" + book.idValue + "'>";
-                addHTML += "<button class='addComment' id="+ book.idValue + ">Add</button>";
+                addHTML += "<button class='addComment' id=" + book.idValue + ">Add</button>";
                 addHTML += "</form>";
                 addHTML += "</div>";
                 addHTML += "<input type='hidden' class='deleteIdValue' value='" + book.idValue + "'>";
@@ -148,7 +148,7 @@ function populateNotes(index, book) {
             console.log(data);
             console.log(data.length, 'comments');
             console.log(book);
-            
+
             $.each(data, function(index, comment, book) {
                 console.log('comment:', comment);
                 var addHTML = "";
@@ -174,6 +174,54 @@ function populateNotes(index, book) {
         });
 }
 
+function usersApiCall(userName, password) {
+    var params = {
+        'userName': userName,
+        'password': password
+    };
+    $.ajax({
+            url: "/users",
+            type: 'POST',
+            data: params,
+            dataType: 'json'
+        })
+        .done(function(result) {
+            console.log(result);
+            // displayQuery(result);
+        })
+        .fail(function(jqXHR, error, errorThrown) {
+            console.log(jqXHR);
+            console.log(error);
+            console.log(errorThrown);
+            $('.errorMessage').show();
+            $('.errorMessage p').text("Opps there was an error handeling your request.")
+        });
+}
+
+function login(userName, password) {
+    var params = {
+        'userName': userName,
+        'password': password
+    };
+
+    $.ajax({
+            url: "/login",
+            type: 'POST',
+            data: params,
+            dataType: 'json'
+        })
+        .done(function(result) {
+            console.log(result);
+            // displayQuery(result);
+        })
+        .fail(function(jqXHR, error, errorThrown) {
+            console.log(jqXHR);
+            console.log(error);
+            console.log(errorThrown);
+            $('.errorMessage').show();
+            $('.errorMessage p').text("Opps there was an error handeling your request.")
+        });
+}
 
 $(document).ready(function() {
     populateCartContainer();
@@ -185,144 +233,162 @@ $(document).ready(function() {
         bookApiCall(searchTerm);
 
     });
-$('body').on('click', '.addComment', function(event) {
-    event.preventDefault();
-    var commentValue = $(this).parent().find('.userComment').val();
-    var _id = $(this).parent().find('.delcommentId').val();
-    console.log("comment", commentValue ,'id:', _id);
-    
-    var commentObject = {
-        'text': commentValue,
-        '_id': _id,
-        'bookId': event.target.id
-    };
-    
-    $.ajax({
-        method: 'POST',
-        dataType: 'json',
-        contentType: 'application/json',
-        data: JSON.stringify(commentObject),
-        url: '/add-to-comment/'
-    })
-    .done(function(result) {
-        console.log('com res', result);
-        populateNotes();
-    })
-    .fail(function(jqXHR, error, errorThrown) {
-            console.log(jqXHR);
-            console.log(error);
-            console.log(errorThrown);
-            $('.errorMessage').show();
-            $('.errorMessage p').text("Opps there was an error handeling your request.")
-        });
-});
+    $('body').on('click', '.addComment', function(event) {
+        event.preventDefault();
+        var commentValue = $(this).parent().find('.userComment').val();
+        var _id = $(this).parent().find('.delcommentId').val();
+        console.log("comment", commentValue, 'id:', _id);
 
-$('body').on('click', '.addToCartButton', function(event) {
-    //if the page refreshes when you submit the form use "preventDefault()" to force JavaScript to handle the form submission
-    event.preventDefault();
-    //get the value from the input box
-    var bookValue = $(this).parent().find('.addToCartBookValue').val();
-    var linkValue = $(this).parent().find('.addToCartLinkValue').val();
-    var idValue = $(this).parent().find('.addToCartIdValue').val();
-    var imgValue = $(this).parent().find('.addToCartImgValue').val();
-    var desValue = $(this).parent().find('.addToCartDesValue').val();
-    console.log(bookValue, linkValue, imgValue);
-    alert(bookValue + ' added to shelf');
+        var commentObject = {
+            'text': commentValue,
+            '_id': _id,
+            'bookId': event.target.id
+        };
 
+        $.ajax({
+                method: 'POST',
+                dataType: 'json',
+                contentType: 'application/json',
+                data: JSON.stringify(commentObject),
+                url: '/add-to-comment/'
+            })
+            .done(function(result) {
+                console.log('com res', result);
+                populateNotes();
+            })
+            .fail(function(jqXHR, error, errorThrown) {
+                console.log(jqXHR);
+                console.log(error);
+                console.log(errorThrown);
+                $('.errorMessage').show();
+                $('.errorMessage p').text("Opps there was an error handeling your request.")
+            });
+    });
 
-    var nameObject = {
-        'name': bookValue,
-        'link': linkValue,
-        'idValue': idValue,
-        'description': desValue,
-        'image': imgValue
-    };
-
-    $.ajax({
-            method: 'POST',
-            dataType: 'json',
-            contentType: 'application/json',
-            data: JSON.stringify(nameObject),
-            url: '/add-to-cart/'
-        })
-        .done(function(result) {
-            console.log('result', result);
-            populateCartContainer();
-        })
-        .fail(function(jqXHR, error, errorThrown) {
-            console.log(jqXHR);
-            console.log(error);
-            console.log(errorThrown);
-            $('.errorMessage').show();
-            $('.errorMessage p').text("Opps there was an error handeling your request.")
-        });
-});
+    $('body').on('click', '.addToCartButton', function(event) {
+        //if the page refreshes when you submit the form use "preventDefault()" to force JavaScript to handle the form submission
+        event.preventDefault();
+        //get the value from the input box
+        var bookValue = $(this).parent().find('.addToCartBookValue').val();
+        var linkValue = $(this).parent().find('.addToCartLinkValue').val();
+        var idValue = $(this).parent().find('.addToCartIdValue').val();
+        var imgValue = $(this).parent().find('.addToCartImgValue').val();
+        var desValue = $(this).parent().find('.addToCartDesValue').val();
+        console.log(bookValue, linkValue, imgValue);
+        alert(bookValue + ' added to shelf');
 
 
-$('body').on('click', '.clearCartButton', function(event) {
-    //if the page refreshes when you submit the form use "preventDefault()" to force JavaScript to handle the form submission
-    event.preventDefault();
-    event.stopPropagation();
-    var idValue = $(this).parent().find('.deleteIdValue').val();
-    console.log('id value', idValue);
+        var nameObject = {
+            'name': bookValue,
+            'link': linkValue,
+            'idValue': idValue,
+            'description': desValue,
+            'image': imgValue
+        };
 
-    var bookid = {
-        idValue: idValue
-    };
+        $.ajax({
+                method: 'POST',
+                dataType: 'json',
+                contentType: 'application/json',
+                data: JSON.stringify(nameObject),
+                url: '/add-to-cart/'
+            })
+            .done(function(result) {
+                console.log('result', result);
+                populateCartContainer();
+            })
+            .fail(function(jqXHR, error, errorThrown) {
+                console.log(jqXHR);
+                console.log(error);
+                console.log(errorThrown);
+                $('.errorMessage').show();
+                $('.errorMessage p').text("Opps there was an error handeling your request.")
+            });
+    });
 
-    $.ajax({
-            method: 'DELETE',
-            dataType: 'json',
-            contentType: 'application/json',
-            data: JSON.stringify(bookid),
-            url: '/delete-cart',
-        })
-        .done(function(result) {
-            console.log(result);
-            populateCartContainer();
-        })
-        .fail(function(jqXHR, error, errorThrown) {
-            console.log(jqXHR);
-            console.log(error);
-            console.log(errorThrown);
-            $('.errorMessage').show();
-            $('.errorMessage p').text("Opps there was an error handeling your request.")
-        });
-});
 
-$('body').on('click', '.delComment', function(event) {
-    //if the page refreshes when you submit the form use "preventDefault()" to force JavaScript to handle the form submission
-    event.preventDefault();
-    event.stopPropagation();
-    var _id = $(this).parent().find('.delCommentId').val();
-    console.log('noteId value', _id);
+    $('body').on('click', '.clearCartButton', function(event) {
+        //if the page refreshes when you submit the form use "preventDefault()" to force JavaScript to handle the form submission
+        event.preventDefault();
+        event.stopPropagation();
+        var idValue = $(this).parent().find('.deleteIdValue').val();
+        console.log('id value', idValue);
 
-    var comments = {
-        _id: _id
-    };
+        var bookid = {
+            idValue: idValue
+        };
 
-    $.ajax({
-            method: 'DELETE',
-            dataType: 'json',
-            contentType: 'application/json',
-            data: JSON.stringify(comments),
-            url: '/delete-comment',
-        })
-        .done(function(result) {
-            console.log(result);
-            populateCartContainer();
-        })
-        .fail(function(jqXHR, error, errorThrown) {
-            console.log(jqXHR);
-            console.log(error);
-            console.log(errorThrown);
-            $('.errorMessage').show();
-            $('.errorMessage p').text("Opps there was an error handeling your request.")
-        });
-});
+        $.ajax({
+                method: 'DELETE',
+                dataType: 'json',
+                contentType: 'application/json',
+                data: JSON.stringify(bookid),
+                url: '/delete-cart',
+            })
+            .done(function(result) {
+                console.log(result);
+                populateCartContainer();
+            })
+            .fail(function(jqXHR, error, errorThrown) {
+                console.log(jqXHR);
+                console.log(error);
+                console.log(errorThrown);
+                $('.errorMessage').show();
+                $('.errorMessage p').text("Opps there was an error handeling your request.")
+            });
+    });
+
+    $('body').on('click', '.delComment', function(event) {
+        //if the page refreshes when you submit the form use "preventDefault()" to force JavaScript to handle the form submission
+        event.preventDefault();
+        event.stopPropagation();
+        var _id = $(this).parent().find('.delCommentId').val();
+        console.log('noteId value', _id);
+
+        var comments = {
+            _id: _id
+        };
+
+        $.ajax({
+                method: 'DELETE',
+                dataType: 'json',
+                contentType: 'application/json',
+                data: JSON.stringify(comments),
+                url: '/delete-comment',
+            })
+            .done(function(result) {
+                console.log(result);
+                populateCartContainer();
+            })
+            .fail(function(jqXHR, error, errorThrown) {
+                console.log(jqXHR);
+                console.log(error);
+                console.log(errorThrown);
+                $('.errorMessage').show();
+                $('.errorMessage p').text("Opps there was an error handeling your request.")
+            });
+    });
     $('.commentInput').submit(function(event) {
         event.preventDefault();
         var notes = $('.userComment').val();
         populateNotes(notes);
+    });
+
+    //login and create new user//
+
+  $('body').on('submit', "#log", function(event) {
+        event.preventDefault();
+        var userName = $('.js-user').val();
+        var password = $(".js-password").val();
+        console.log(userName, password);
+        login(userName, password);
+    });
+    
+    $('body').on("submit", "#create", function(event) {
+        event.preventDefault();
+        var userName = $(".js-userReg").val();
+        var password = $(".js-passwordReg").val();
+        console.log(userName, password);
+        usersApiCall(userName, password);
     });
 });
