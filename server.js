@@ -6,6 +6,7 @@ var http = require('http');
 var Book = require('./models/book');
 var Comment = require('./models/comment');
 var Users = require("./models/users");
+var passport = require('passport');
 
 /*api resources*/
 var unirest = require('unirest');
@@ -24,29 +25,30 @@ app.use(bodyParser.urlencoded({
 }));
 
 var server = http.Server(app);
+mongoose.connect(config.DATABASE_URL)
 
-var runServer = function(callback) {
-    mongoose.connect(config.DATABASE_URL, function(err) {
-        if (err && callback) {
-            return callback(err);
-        }
+//var runServer = function(callback) {
+//    mongoose.connect(config.DATABASE_URL, function(err) {
+//        if (err && callback) {
+//            return callback(err);
+//        }
+//
+//        app.listen(config.PORT, function() {
+//            console.log('Listening on localhost:' + config.PORT);
+//            if (callback) {
+//                callback();
+//            }
+//        });
+//    });
+//};
 
-        app.listen(config.PORT, function() {
-            console.log('Listening on localhost:' + config.PORT);
-            if (callback) {
-                callback();
-            }
-        });
-    });
-};
-
-if (require.main === module) {
-    runServer(function(err) {
-        if (err) {
-            console.error(err);
-        }
-    });
-};
+//if (require.main === module) {
+//    runServer(function(err) {
+//        if (err) {
+//            console.error(err);
+//        }
+//    });
+//};
 
 var getBookApi = function(searchTerm) {
     console.log(searchTerm);
@@ -148,7 +150,7 @@ app.delete('/delete-cart', function(req, res) {
 });
 
 app.get('/populate-notes', function(req, res) {
-    Book.find(function(err, notes) {
+    Comment.find(function(err, notes) {
         if (err) {
             return res.status(500).json({
                 message: 'Internal Server Error'
@@ -218,10 +220,10 @@ app.post('/add-to-comment', function(req, res) {
 //             //     });
 //             //  });
 //             //  }}
-         
+
 //             res.status(201).json(notes);
 //         });
-   
+
     // populate('notes').
     // exec(function (err, book){
     //     if (err) return res.status(500).json({
@@ -231,7 +233,7 @@ app.post('/add-to-comment', function(req, res) {
     // });
 
 // });
-    
+
 
 app.delete('/delete-comment', function(req, res) {
     console.log(req.body.commentId);
@@ -251,19 +253,9 @@ app.delete('/delete-comment', function(req, res) {
     });
 });
 
-
-
-app.use('*', function(req, res) {
-    res.status(404).json({
-        message: 'Not Found'
-    });
-});
-
 //login//
 
 app.post('/login', function(req, res) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     var userName = req.body.userName;
     var password = req.body.password;
     console.log(userName, password);
@@ -277,7 +269,6 @@ app.post('/login', function(req, res) {
             });
         }
         if (!users) {
-            //bad username
             return res.status(401).json({
                 message: 'Not found'
             });
@@ -291,14 +282,13 @@ app.post('/login', function(req, res) {
                 }
                 if (!isValid) {
                     return res.status(401).json({
-                        message: 'Not found'
+                        message: 'oops wrong password'
                     });
                 }
                 else {
                     console.log("User: " + userName + " logged in.");
                     return res.json(users);
                 }
-                //return something here
 
             });
         }
@@ -308,6 +298,7 @@ app.post('/login', function(req, res) {
 //create new users//
 
 app.post('/users', function(req, res) {
+    console.log('made it');
     var requiredFields = ['userName', 'password'];
     for (var i = 0; i < requiredFields.length; i++) {
         var field = requiredFields[i];
@@ -332,6 +323,12 @@ app.post('/users', function(req, res) {
 
 });
 
+app.get('/shelf', isLoggedIn, function(req, res){
+    res.render('shelf.html', {
+        user: req.user
+    });
+});
+
 //logout//
 
 app.get('/logout', function(req, res) {
@@ -339,7 +336,10 @@ app.get('/logout', function(req, res) {
     res.redirect('/');
 });
 
+function isLoggedIn(req, res, next) {
+    if (req.isAuthenticated())
+        return next();
+    res.redirect('/');
+}
 
-exports.app = app;
-exports.runServer = runServer;
-app.listen(process.env.PORT || 5000, process.env.IP);
+app.listen(process.env.PORT || 8080, () => console.log('Server is up & running a ok'))

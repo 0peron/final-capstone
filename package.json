@@ -20,7 +20,9 @@
     "mongoose": "^4.7.6",
     "morgan": "^1.7.0",
     "unirest": "^0.5.1",
-    "uuid": "^3.1.0"
+    "uuid": "^3.1.0",
+    "passport" : "~0.1.17",
+    "passport-local" : "~0.1.6"
   },
   "devDependencies": {
     "chai": "^3.5.0",

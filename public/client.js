@@ -135,7 +135,7 @@ function populateCartContainer() {
         });
 }
 
-function populateNotes(index, book) {
+function populateNotes(index) {
 
     $.ajax({
             type: "GET",
@@ -147,9 +147,8 @@ function populateNotes(index, book) {
             //If successful, set some globals instead of using result object
             console.log(data);
             console.log(data.length, 'comments');
-            console.log(book);
 
-            $.each(data, function(index, comment, book) {
+            $.each(data, function(index, comment) {
                 console.log('comment:', comment);
                 var addHTML = "";
                 $('.userNotes-' + index).html("");
@@ -158,11 +157,11 @@ function populateNotes(index, book) {
                 addHTML += "<p class = 'text'>" + comment.text + "</p>";
                 addHTML += "<button class='delComment'>Remove</button>";
                 addHTML += "</div>";
-                addHTML += "<input type='hidden' class='delCommentId' value='" + comment._id + "'>";
+                addHTML += "<input type='hidden' class='delCommentId' value='" + comment.commentId + "'>";
                 addHTML += "</li>";
                 $(".userNotes-" + index).append(addHTML);
-                console.log('gethere', comment.notes, index);
-                console.log(comment._id);
+                console.log('gethere', comment.text, index);
+                console.log(comment.commentId);
             });
         })
         .fail(function(jqXHR, error, errorThrown) {
@@ -180,7 +179,7 @@ function usersApiCall(userName, password) {
         'password': password
     };
     $.ajax({
-            url: "/users",
+        url: "http://localhost:8080/users",
             type: 'POST',
             data: params,
             dataType: 'json'
@@ -226,23 +225,29 @@ function login(userName, password) {
 $(document).ready(function() {
     populateCartContainer();
     populateNotes();
+    $('.register').hide();
+    $('.reg').on('click', function(event){
+        event.preventDefault();
+        $('.register').show();
+        $('.reg').hide();
+    });
+
     $('.js-search-form').submit(function(event) {
         event.preventDefault();
         searchTerm = $('.js-query').val();
         console.log('searchTerm =', searchTerm);
         bookApiCall(searchTerm);
-
     });
+
     $('body').on('click', '.addComment', function(event) {
         event.preventDefault();
         var commentValue = $(this).parent().find('.userComment').val();
-        var _id = $(this).parent().find('.delcommentId').val();
-        console.log("comment", commentValue, 'id:', _id);
+        var commentId = $(this).parent().find('.delcommentId').val();
+        console.log("comment", commentValue, 'id:', commentId);
 
         var commentObject = {
             'text': commentValue,
-            '_id': _id,
-            'bookId': event.target.id
+            'commentId': commentId
         };
 
         $.ajax({
@@ -342,11 +347,11 @@ $(document).ready(function() {
         //if the page refreshes when you submit the form use "preventDefault()" to force JavaScript to handle the form submission
         event.preventDefault();
         event.stopPropagation();
-        var _id = $(this).parent().find('.delCommentId').val();
-        console.log('noteId value', _id);
+        var commentId = $(this).parent().find('.delCommentId').val();
+        console.log('noteId value', commentId);
 
         var comments = {
-            _id: _id
+            commentId: commentId
         };
 
         $.ajax({
@@ -383,7 +388,7 @@ $(document).ready(function() {
         console.log(userName, password);
         login(userName, password);
     });
-    
+
     $('body').on("submit", "#create", function(event) {
         event.preventDefault();
         var userName = $(".js-userReg").val();

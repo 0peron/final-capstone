@@ -15,15 +15,11 @@ var usersSchema = new mongoose.Schema({
 });
 
 usersSchema.methods.validatePassword = function(password) {
-    return bcrypt
-        .compare(password, this.password)
-        .then(isValid => isValid);
+    return bcrypt.compareSync(password, this.password);
 };
 
-usersSchema.statics.hashPassword = function(password) {
-    return bcrypt
-        .hash(password, 8)
-        .then(hash => hash);
+usersSchema.methods.hashPassword = function(password) {
+    return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
 };
 
 usersSchema.methods.apiRepr = function() {
