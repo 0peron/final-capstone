@@ -302,7 +302,7 @@ section.shelf ul.shelfItems {
 li.itemContain {
     display: block;
     text-align: center;
-    padding: 30px;
+    padding: 35px;
     height: inherit;
     border-bottom: 1px solid black;
 }
@@ -445,7 +445,43 @@ section.signup .login .reg:hover {
     section.wrapper .bookTitles ul li.bookContain .bookPreview .book-image {
         height: 400px;
     }
-    section.container form {
-        text-align: center;
+
+    .navRight {
+        float: none;
     }
+    header section.container form {
+        text-align: center;
+        margin-bottom: 1rem;
+        width: 100%;
+    }
+
+    section.landing {
+        width: 100%;
+        height: inherit;
+    }
+
+    header {
+        height: inherit;
+    }
+
+    header h1 {
+        margin-left: 0px;
+    }
+
+    section.shelf ul.shelfItems {
+        width:100%;
+    }
+
+    section.shelf ul.shelfItems li.ItemContain .bookImg {
+        width 100%;
+    }
+
+    section.signup {
+        width: 100%;
+    }
+
+    section.signup input {
+        margin-bottom: 1.2rem;
+    }
+
 }

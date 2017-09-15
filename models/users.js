@@ -15,6 +15,7 @@ var usersSchema = new mongoose.Schema({
 });
 
 usersSchema.methods.validatePassword = function(password) {
+    console.log('this is:', this.password);
     return bcrypt.compareSync(password, this.password);
 };
 
@@ -26,10 +27,11 @@ usersSchema.methods.apiRepr = function() {
     return {
         id: this._id,
         userName: this.userName,
-        password: this.password,
+        password: this.password
     };
 };
 
 var Users = mongoose.model('Users', usersSchema);
 
 module.exports = Users;
+
