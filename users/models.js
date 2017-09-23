@@ -12,9 +12,7 @@ var UserSchema = mongoose.Schema({
     password: {
         type: String,
         required: true
-    },
-    firstName: {type: String, default: ''},
-    lastName: {type: String, default: ''}
+    }
 });
 
 UserSchema.methods.apiRepr = function() {

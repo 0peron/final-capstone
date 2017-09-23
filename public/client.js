@@ -173,11 +173,14 @@ function usersApiCall(username, password) {
         'username': username,
         'password': password
     };
+
     $.ajax({
         url: "/users",
             type: 'POST',
-            data: params,
-            dataType: 'json'
+            data: JSON.stringify(params),
+            dataType: 'json',
+            processData: false,
+            contentType: 'application/json'
         })
         .done(function(result) {
             console.log(result);
@@ -201,8 +204,9 @@ function login(username, password) {
     $.ajax({
             url: "/login",
             type: 'POST',
-            data: params,
-            dataType: 'json'
+            data: JSON.stringify(params),
+            dataType: 'json',
+            contentType: 'application/json'
         })
         .done(function(result) {
             console.log(result);

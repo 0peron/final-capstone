@@ -27,12 +27,22 @@ app.use(bodyParser.urlencoded({
     extended: false
 }));
 
+app.use(function(req, res, next) {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'Content-Type,Authorization');
+    res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,DELETE');
+    if (req.method === 'OPTIONS') {
+        return res.send(204);
+    }
+    next();
+});
+
 app.use(passport.initialize());
 passport.use(basicStrategy);
 passport.use(jwtStrategy);
 
 app.use('/users/', usersRouter);
-app.use('/auth/', authRouter);
+app.use('/login/', authRouter);
 
 
 var server = http.Server(app);
@@ -42,7 +52,6 @@ var getBookApi = function(searchTerm) {
     console.log(searchTerm);
     var emitter = new events.EventEmitter();
     var key = 'AIzaSyDiIDDnvki5T6i83J2pS-m2VsnjhINjF5E'
-        // unirest.get('https://www.googleapis.com/books/v1/volumes?q=' + searchTerm + '&key=AIzaSyDiIDDnvki5T6i83J2pS-m2VsnjhINjF5E')
     unirest.get('https://www.googleapis.com/books/v1/volumes?q=' + searchTerm + '&maxResults=12')
         .end(function(response) {
             if (response.ok) {
@@ -176,53 +185,6 @@ app.post('/add-to-comment', function(req, res) {
 
 });
 
-// app.post('/add-to-comment', function(req, res) {
-//     console.log('comment', req.body.text);
-//     var requiredFields = ['text'];
-//     for (var i = 0; i < requiredFields.length; i++) {
-//         var field = requiredFields[i];
-//         if (!(field in req.body)) {
-//             var message = 'Missing `' + field + '` in request body';
-//             console.error(message);
-//             return res.status(400).send(message);
-//         }
-//     }
-
-//     Comment.create({
-//             text: req.body.notes,
-//             _id: req.body._id,
-//         },
-//         function(err, notes, book) {
-//             if (err) {
-//                 return res.status(500).json({
-//                     message: err
-//                 });
-//             }
-//             //  Book
-//             //  .findOne({idValue: req.body.bookId})
-//             //  .exec(function(error, book){
-//             //  book.notes.push(notes) {
-//             //     book.save(function(err){
-//             //      if (err) {
-//             //          return res.status(500).json({
-//             //         message: err
-//             //     });
-//             //  });
-//             //  }}
-
-//             res.status(201).json(notes);
-//         });
-
-    // populate('notes').
-    // exec(function (err, book){
-    //     if (err) return res.status(500).json({
-    //         message:err
-    //     });
-    //     console.log('The note is %s', book.notes.notes);
-    // });
-
-// });
-
 
 app.delete('/delete-comment', function(req, res) {
     console.log(req.body.commentId);
@@ -311,6 +273,18 @@ app.delete('/delete-comment', function(req, res) {
 //    });
 //
 //});
+
+app.get ('/users', function(req, res) {
+    return res.status(400).json({
+   message: 'hello users'
+    });
+});
+
+app.get('/login', function (req, res) {
+    return res.status(400).json({
+        message: 'hello login'
+    });
+});
 
 app.get(
     '/shelf',
