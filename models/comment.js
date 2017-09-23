@@ -2,12 +2,16 @@ var mongoose = require('mongoose');
 
 var commentSchema = new mongoose.Schema({
     text: {
-        type:String,
+        type: String,
         required: false
     },
     commentId: {
         type: Number,
-        required: false,
+        required: false
+    },
+    bookId: {
+        type: String,
+        required: false
     }
 
 });

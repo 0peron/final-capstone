@@ -31,7 +31,6 @@ function bookApiCall(searchTerm) {
             dataType: 'json'
         })
         .done(function(result) {
-            console.log(result);
             $('.landing').hide();
             $('.errorMessage').hide();
             displayQuery(result);
@@ -89,14 +88,10 @@ function populateCartContainer() {
             contentType: 'application/json'
         })
         .done(function(data) {
-            //If successful, set some globals instead of using result object
             console.log(data);
-
-
             var addHTML = "";
 
             $.each(data, function(index, book) {
-                console.log('book:', book);
                 addHTML += "<li class='itemContain'>";
                 addHTML += "<div class = 'bookImg'>";
                 addHTML += "<a href='" + book.link + "' target='_blank'>";
@@ -113,7 +108,7 @@ function populateCartContainer() {
                 addHTML += "<p>" + book.description + "</p>";
                 addHTML += "</div>";
                 addHTML += "<div class ='textBox'>";
-                addHTML += "<ul class='userNotes-" + index + "'>";
+                addHTML += "<ul class='userNotes-" + book.idValue + "'>";
                 addHTML += "</ul>";
                 addHTML += "<form class='commentInput'>";
                 addHTML += "<input type='text' class='userComment' placeholder='Add Notes'>";
@@ -135,7 +130,7 @@ function populateCartContainer() {
         });
 }
 
-function populateNotes(index) {
+function populateNotes() {
 
     $.ajax({
             type: "GET",
@@ -144,24 +139,24 @@ function populateNotes(index) {
             contentType: 'application/json'
         })
         .done(function(data) {
-            //If successful, set some globals instead of using result object
+            if(!data.length){return;}
             console.log(data);
             console.log(data.length, 'comments');
-
-            $.each(data, function(index, comment) {
-                console.log('comment:', comment);
+            $('ul[class*="userNotes"]').html("");
+            $.each(data, function(book, comment, index) {
+                console.log('comment:', comment ,'bookid:', comment.bookId);
                 var addHTML = "";
-                $('.userNotes-' + index).html("");
                 addHTML += "<li class='noteContain'>";
                 addHTML += "<div class = 'addedNote'>";
                 addHTML += "<p class = 'text'>" + comment.text + "</p>";
                 addHTML += "<button class='delComment'>Remove</button>";
                 addHTML += "</div>";
-                addHTML += "<input type='hidden' class='delCommentId' value='" + comment.commentId + "'>";
+                addHTML += "<input type='hidden' class='delCommentId' value='" + index + "'>";
                 addHTML += "</li>";
-                $(".userNotes-" + index).append(addHTML);
-                console.log('gethere', comment.text, index);
-                console.log(comment.commentId);
+                $(".userNotes-" + comment.bookId).append(addHTML);
+                console.log(addHTML);
+//                console.log('gethere', comment.text, comment.bookId);
+//                console.log(index);
             });
         })
         .fail(function(jqXHR, error, errorThrown) {
@@ -173,13 +168,13 @@ function populateNotes(index) {
         });
 }
 
-function usersApiCall(userName, password) {
+function usersApiCall(username, password) {
     var params = {
-        'userName': userName,
+        'username': username,
         'password': password
     };
     $.ajax({
-        url: "http://localhost:8080/users",
+        url: "/users",
             type: 'POST',
             data: params,
             dataType: 'json'
@@ -197,9 +192,9 @@ function usersApiCall(userName, password) {
         });
 }
 
-function login(userName, password) {
+function login(username, password) {
     var params = {
-        'userName': userName,
+        'username': username,
         'password': password
     };
 
@@ -243,11 +238,14 @@ $(document).ready(function() {
         event.preventDefault();
         var commentValue = $(this).parent().find('.userComment').val();
         var commentId = $(this).parent().find('.delcommentId').val();
+        var bookId = $(this).parent().find('.comId').val();
+        console.log('on click bookid:', bookId);
         console.log("comment", commentValue, 'id:', commentId);
 
         var commentObject = {
             'text': commentValue,
-            'commentId': commentId
+            'commentId': commentId,
+            'bookId': bookId
         };
 
         $.ajax({
@@ -383,17 +381,17 @@ $(document).ready(function() {
 
   $('body').on('submit', "#log", function(event) {
         event.preventDefault();
-        var userName = $('.js-user').val();
+        var username = $('.js-user').val();
         var password = $(".js-password").val();
-        console.log(userName, password);
-        login(userName, password);
+        console.log(username, password);
+        login(username, password);
     });
 
     $('body').on("submit", "#create", function(event) {
         event.preventDefault();
-        var userName = $(".js-userReg").val();
+        var username = $(".js-userReg").val();
         var password = $(".js-passwordReg").val();
-        console.log(userName, password);
-        usersApiCall(userName, password);
+        console.log(username, password);
+        usersApiCall(username, password);
     });
 });

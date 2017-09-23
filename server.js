@@ -1,12 +1,15 @@
 /*express resources*/
+//require('dotenv').config();
 var express = require('express');
 var bodyParser = require('body-parser');
 var jsonParser = bodyParser.json();
 var http = require('http');
 var Book = require('./models/book');
 var Comment = require('./models/comment');
-var Users = require("./models/users");
 var passport = require('passport');
+var {router: usersRouter} = require('./users');
+var {router: authRouter, basicStrategy, jwtStrategy} = require('./auth');
+
 
 /*api resources*/
 var unirest = require('unirest');
@@ -24,31 +27,16 @@ app.use(bodyParser.urlencoded({
     extended: false
 }));
 
+app.use(passport.initialize());
+passport.use(basicStrategy);
+passport.use(jwtStrategy);
+
+app.use('/users/', usersRouter);
+app.use('/auth/', authRouter);
+
+
 var server = http.Server(app);
 mongoose.connect(config.DATABASE_URL)
-
-//var runServer = function(callback) {
-//    mongoose.connect(config.DATABASE_URL, function(err) {
-//        if (err && callback) {
-//            return callback(err);
-//        }
-//
-//        app.listen(config.PORT, function() {
-//            console.log('Listening on localhost:' + config.PORT);
-//            if (callback) {
-//                callback();
-//            }
-//        });
-//    });
-//};
-
-//if (require.main === module) {
-//    runServer(function(err) {
-//        if (err) {
-//            console.error(err);
-//        }
-//    });
-//};
 
 var getBookApi = function(searchTerm) {
     console.log(searchTerm);
@@ -174,7 +162,8 @@ app.post('/add-to-comment', function(req, res) {
 
     Comment.create({
             text: req.body.text,
-            Commentid: req.body.commentId,
+            commentId: req.body.commentId,
+            bookId: req.body.bookId
         },
         function(err, notes) {
             if (err) {
@@ -255,79 +244,83 @@ app.delete('/delete-comment', function(req, res) {
 
 //login//
 
-app.post('/login', function(req, res) {
-    var userName = req.body.userName;
-    var password = req.body.password;
-    console.log(userName, password);
-    Users.findOne({
-        userName: userName,
-        password: password
-    }, function(err, users) {
-        if (err) {
-            return res.status(500).json({
-                message: 'Internal Server Error'
-            });
-        }
-        if (!users) {
-            return res.status(401).json({
-                message: 'Not found'
-            });
-        }
-        else {
-            console.log('validatePassword');
-            Users.schema.methods.validatePassword(password, function(err, isValid) {
-                console.log(err, isValid, 'hello');
-                if (err) {
-                    console.log(err);
-                }
-                if (!isValid) {
-                    return res.status(401).json({
-                        message: 'oops wrong password'
-                    });
-                }
-                else {
-                    console.log("User: " + userName + " logged in.");
-                    return res.json(users);
-                }
+//app.post('/login', function(req, res) {
+//    var userName = req.body.userName;
+//    var password = req.body.password;
+//    console.log('post:', userName, password);
+//    Users.findOne({
+//        userName: userName,
+//        password: password
+//    }, function(err, users) {
+//        if (err) {
+//            return res.status(500).json({
+//                message: 'Internal Server Error'
+//            });
+//        }
+//        if (!users) {
+//            return res.status(401).json({
+//                message: 'Not found'
+//            });
+//        }
+//        else {
+//            console.log('validatePassword');
+//            Users.schema.methods.validatePassword(password, function(err, isValid) {
+//                console.log(err, isValid, 'hello');
+//                if (err) {
+//                    console.log(err);
+//                }
+//                if (!isValid) {
+//                    return res.status(401).json({
+//                        message: 'oops wrong password'
+//                    });
+//                }
+//                else {
+//                    console.log("User: " + userName + " logged in.");
+//                    return res.json(users);
+//                }
+//
+//            });
+//        }
+//    });
+//});
+//
+////create new users//
+//
+//app.post('/users', function(req, res) {
+//    console.log('made it');
+//    var requiredFields = ['userName', 'password'];
+//    for (var i = 0; i < requiredFields.length; i++) {
+//        var field = requiredFields[i];
+//        if (!(field in req.body)) {
+//            var message = 'Missing `' + field + '` in request body';
+//            console.error(message);
+//            return res.status(400).send(message);
+//        }
+//    }
+//
+//    Users.create({
+//        userName: req.body.userName,
+//        password: req.body.password
+//    }, function(err, user) {
+//        if (err) {
+//            return res.status(500).json({
+//                message: err
+//            });
+//        }
+//        res.status(201).json(user);
+//    });
+//
+//});
 
-            });
-        }
-    });
-});
-
-//create new users//
-
-app.post('/users', function(req, res) {
-    console.log('made it');
-    var requiredFields = ['userName', 'password'];
-    for (var i = 0; i < requiredFields.length; i++) {
-        var field = requiredFields[i];
-        if (!(field in req.body)) {
-            var message = 'Missing `' + field + '` in request body';
-            console.error(message);
-            return res.status(400).send(message);
-        }
+app.get(
+    '/shelf',
+    passport.authenticate('jwt', {session: false}),
+    (req, res) => {
+        return res.json({
+            data: 'rosebud'
+        });
     }
-
-    Users.create({
-        userName: req.body.userName,
-        password: req.body.password
-    }, function(err, user) {
-        if (err) {
-            return res.status(500).json({
-                message: err
-            });
-        }
-        res.status(201).json(user);
-    });
-
-});
-
-app.get('/shelf', isLoggedIn, function(req, res){
-    res.render('shelf.html', {
-        user: req.user
-    });
-});
+);
 
 //logout//
 
@@ -335,11 +328,5 @@ app.get('/logout', function(req, res) {
     req.logout();
     res.redirect('/');
 });
-
-function isLoggedIn(req, res, next) {
-    if (req.isAuthenticated())
-        return next();
-    res.redirect('/');
-}
 
 app.listen(process.env.PORT || 8080, () => console.log('Server is up & running a ok'))
