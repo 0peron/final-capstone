@@ -4,8 +4,7 @@ function validateUrl(url) {
     var output = '';
     if (url === undefined) {
         output = 'image/image-not-found.jpg';
-    }
-    else {
+    } else {
         output = url.thumbnail;
     }
     return output;
@@ -15,8 +14,7 @@ function validateText(text) {
     var output = '';
     if (text === undefined) {
         output = 'No Description Available';
-    }
-    else {
+    } else {
         output = text;
 
     }
@@ -30,12 +28,12 @@ function bookApiCall(searchTerm) {
             type: 'GET',
             dataType: 'json'
         })
-        .done(function(result) {
+        .done(function (result) {
             $('.landing').hide();
             $('.errorMessage').hide();
             displayQuery(result);
         })
-        .fail(function(jqXHR, error, errorThrown) {
+        .fail(function (jqXHR, error, errorThrown) {
             console.log(jqXHR);
             console.log(error);
             console.log(errorThrown);
@@ -47,7 +45,7 @@ function bookApiCall(searchTerm) {
 function displayQuery(data) {
     console.log(data);
     var addHTML = "";
-    $.each(data.items, function(index, book) {
+    $.each(data.items, function (index, book) {
         addHTML += "<li class ='bookContain'>";
         addHTML += "<div class='bookPreview' type='submit'>";
         addHTML += "<div class='bookTitle'>";
@@ -87,11 +85,11 @@ function populateCartContainer() {
             dataType: 'json',
             contentType: 'application/json'
         })
-        .done(function(data) {
+        .done(function (data) {
             console.log(data);
             var addHTML = "";
 
-            $.each(data, function(index, book) {
+            $.each(data, function (index, book) {
                 addHTML += "<li class='itemContain'>";
                 addHTML += "<div class = 'bookImg'>";
                 addHTML += "<a href='" + book.link + "' target='_blank'>";
@@ -120,8 +118,9 @@ function populateCartContainer() {
                 addHTML += "</li>";
             });
             $(".shelf ul").html(addHTML);
+            populateNotes();
         })
-        .fail(function(jqXHR, error, errorThrown) {
+        .fail(function (jqXHR, error, errorThrown) {
             console.log(jqXHR);
             console.log(error);
             console.log(errorThrown);
@@ -138,28 +137,28 @@ function populateNotes() {
             dataType: 'json',
             contentType: 'application/json'
         })
-        .done(function(data) {
-            if(!data.length){return;}
+        .done(function (data) {
+            if (!data.length) {
+                return;
+            }
             console.log(data);
             console.log(data.length, 'comments');
             $('ul[class*="userNotes"]').html("");
-            $.each(data, function(book, comment, index) {
-                console.log('comment:', comment ,'bookid:', comment.bookId);
+            $.each(data, function (book, comment, index) {
+                console.log('comment:', comment, 'bookid:', comment.bookId);
                 var addHTML = "";
                 addHTML += "<li class='noteContain'>";
                 addHTML += "<div class = 'addedNote'>";
                 addHTML += "<p class = 'text'>" + comment.text + "</p>";
                 addHTML += "<button class='delComment'>Remove</button>";
                 addHTML += "</div>";
-                addHTML += "<input type='hidden' class='delCommentId' value='" + index + "'>";
+                addHTML += "<input type='hidden' class='delCommentId' value='" + comment._id + "'>";
                 addHTML += "</li>";
                 $(".userNotes-" + comment.bookId).append(addHTML);
-                console.log(addHTML);
-//                console.log('gethere', comment.text, comment.bookId);
-//                console.log(index);
+                console.log(comment._id);
             });
         })
-        .fail(function(jqXHR, error, errorThrown) {
+        .fail(function (jqXHR, error, errorThrown) {
             console.log(jqXHR);
             console.log(error);
             console.log(errorThrown);
@@ -175,21 +174,23 @@ function usersApiCall(username, password) {
     };
 
     $.ajax({
-        url: "/users",
+            url: "/users",
             type: 'POST',
             data: JSON.stringify(params),
             dataType: 'json',
             processData: false,
             contentType: 'application/json'
+
         })
-        .done(function(result) {
+        .done(function (result) {
             console.log(result);
             // displayQuery(result);
         })
-        .fail(function(jqXHR, error, errorThrown) {
+        .fail(function (jqXHR, error, errorThrown) {
             console.log(jqXHR);
             console.log(error);
             console.log(errorThrown);
+            console.log("these are params", params);
             $('.errorMessage').show();
             $('.errorMessage p').text("Opps there was an error handeling your request.")
         });
@@ -201,18 +202,20 @@ function login(username, password) {
         'password': password
     };
 
+    var loginString = btoa(username + ':' + password)
     $.ajax({
             url: "/login",
             type: 'POST',
             data: JSON.stringify(params),
-            dataType: 'json',
-            contentType: 'application/json'
+//            dataType: 'json',
+            contentType: 'application/json',
+            headers: {"Authorization": 'Basic ' + loginString}
         })
-        .done(function(result) {
+        .done(function (result) {
             console.log(result);
             // displayQuery(result);
         })
-        .fail(function(jqXHR, error, errorThrown) {
+        .fail(function (jqXHR, error, errorThrown) {
             console.log(jqXHR);
             console.log(error);
             console.log(errorThrown);
@@ -221,34 +224,31 @@ function login(username, password) {
         });
 }
 
-$(document).ready(function() {
+$(document).ready(function () {
     populateCartContainer();
-    populateNotes();
     $('.register').hide();
-    $('.reg').on('click', function(event){
+    $('.reg').on('click', function (event) {
         event.preventDefault();
         $('.register').show();
         $('.reg').hide();
     });
 
-    $('.js-search-form').submit(function(event) {
+    $('.js-search-form').submit(function (event) {
         event.preventDefault();
         searchTerm = $('.js-query').val();
         console.log('searchTerm =', searchTerm);
         bookApiCall(searchTerm);
     });
 
-    $('body').on('click', '.addComment', function(event) {
+    $('body').on('click', '.addComment', function (event) {
         event.preventDefault();
         var commentValue = $(this).parent().find('.userComment').val();
-        var commentId = $(this).parent().find('.delcommentId').val();
         var bookId = $(this).parent().find('.comId').val();
         console.log('on click bookid:', bookId);
-        console.log("comment", commentValue, 'id:', commentId);
+        console.log("comment", commentValue);
 
         var commentObject = {
             'text': commentValue,
-            'commentId': commentId,
             'bookId': bookId
         };
 
@@ -259,11 +259,11 @@ $(document).ready(function() {
                 data: JSON.stringify(commentObject),
                 url: '/add-to-comment/'
             })
-            .done(function(result) {
+            .done(function (result) {
                 console.log('com res', result);
                 populateNotes();
             })
-            .fail(function(jqXHR, error, errorThrown) {
+            .fail(function (jqXHR, error, errorThrown) {
                 console.log(jqXHR);
                 console.log(error);
                 console.log(errorThrown);
@@ -272,7 +272,7 @@ $(document).ready(function() {
             });
     });
 
-    $('body').on('click', '.addToCartButton', function(event) {
+    $('body').on('click', '.addToCartButton', function (event) {
         //if the page refreshes when you submit the form use "preventDefault()" to force JavaScript to handle the form submission
         event.preventDefault();
         //get the value from the input box
@@ -300,11 +300,11 @@ $(document).ready(function() {
                 data: JSON.stringify(nameObject),
                 url: '/add-to-cart/'
             })
-            .done(function(result) {
+            .done(function (result) {
                 console.log('result', result);
                 populateCartContainer();
             })
-            .fail(function(jqXHR, error, errorThrown) {
+            .fail(function (jqXHR, error, errorThrown) {
                 console.log(jqXHR);
                 console.log(error);
                 console.log(errorThrown);
@@ -314,7 +314,7 @@ $(document).ready(function() {
     });
 
 
-    $('body').on('click', '.clearCartButton', function(event) {
+    $('body').on('click', '.clearCartButton', function (event) {
         //if the page refreshes when you submit the form use "preventDefault()" to force JavaScript to handle the form submission
         event.preventDefault();
         event.stopPropagation();
@@ -332,11 +332,11 @@ $(document).ready(function() {
                 data: JSON.stringify(bookid),
                 url: '/delete-cart',
             })
-            .done(function(result) {
+            .done(function (result) {
                 console.log(result);
                 populateCartContainer();
             })
-            .fail(function(jqXHR, error, errorThrown) {
+            .fail(function (jqXHR, error, errorThrown) {
                 console.log(jqXHR);
                 console.log(error);
                 console.log(errorThrown);
@@ -345,15 +345,15 @@ $(document).ready(function() {
             });
     });
 
-    $('body').on('click', '.delComment', function(event) {
+    $('body').on('click', '.delComment', function (event) {
         //if the page refreshes when you submit the form use "preventDefault()" to force JavaScript to handle the form submission
         event.preventDefault();
         event.stopPropagation();
-        var commentId = $(this).parent().find('.delCommentId').val();
+        var commentId = $(this).parent().parent().find('.delCommentId').val();
         console.log('noteId value', commentId);
 
         var comments = {
-            commentId: commentId
+            _id: commentId
         };
 
         $.ajax({
@@ -363,11 +363,11 @@ $(document).ready(function() {
                 data: JSON.stringify(comments),
                 url: '/delete-comment',
             })
-            .done(function(result) {
+            .done(function (result) {
                 console.log(result);
                 populateCartContainer();
             })
-            .fail(function(jqXHR, error, errorThrown) {
+            .fail(function (jqXHR, error, errorThrown) {
                 console.log(jqXHR);
                 console.log(error);
                 console.log(errorThrown);
@@ -375,7 +375,7 @@ $(document).ready(function() {
                 $('.errorMessage p').text("Opps there was an error handeling your request.")
             });
     });
-    $('.commentInput').submit(function(event) {
+    $('.commentInput').submit(function (event) {
         event.preventDefault();
         var notes = $('.userComment').val();
         populateNotes(notes);
@@ -383,7 +383,7 @@ $(document).ready(function() {
 
     //login and create new user//
 
-  $('body').on('submit', "#log", function(event) {
+    $('body').on('submit', "#log", function (event) {
         event.preventDefault();
         var username = $('.js-user').val();
         var password = $(".js-password").val();
@@ -391,7 +391,7 @@ $(document).ready(function() {
         login(username, password);
     });
 
-    $('body').on("submit", "#create", function(event) {
+    $('body').on("submit", "#create", function (event) {
         event.preventDefault();
         var username = $(".js-userReg").val();
         var password = $(".js-passwordReg").val();

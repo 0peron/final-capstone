@@ -2,7 +2,9 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const passport = require('passport');
 
-const {User} = require('./models');
+const {
+    User
+} = require('./models');
 
 const router = express.Router();
 
@@ -10,7 +12,7 @@ const jsonParser = bodyParser.json();
 
 // Post to register a new user
 router.post('/', jsonParser, (req, res) => {
-    console.log(req.body);
+    console.log('this is user info:', req.body);
     const requiredFields = ['username', 'password'];
     const missingField = requiredFields.find(field => !req.body.hasOwnProperty(field));
 
@@ -75,52 +77,62 @@ router.post('/', jsonParser, (req, res) => {
         return res.status(422).json({
             code: 422,
             reason: 'ValidationError',
-            message: tooSmallField
-            ? `Must be at least ${sizedFields[tooSmallField]
-            .min} characters long`
-            : `Must be at most ${sizedFields[tooLargeField]
+            message: tooSmallField ? `Must be at least ${sizedFields[tooSmallField]
+            .min} characters long` : `Must be at most ${sizedFields[tooLargeField]
             .max} characters long`,
             location: tooSmallField || tooLargeField
         });
     }
 
-    let {username, password} = req.body;
+    let {
+        username, password
+    } = req.body;
 
-    return User.find({username})
+    return User.find({
+            username
+        })
         .count()
         .then(count => {
-        if (count > 0) {
-            return Promise.reject({
-                code: 422,
-                reason: 'ValidationError',
-                message: 'Username already taken',
-                location: 'username'
-            });
-        }
-        return User.hashPassword(password);
-    })
+            if (count > 0) {
+                return Promise.reject({
+                    code: 422,
+                    reason: 'ValidationError',
+                    message: 'Username already taken',
+                    location: 'username'
+                });
+            }
+            return User.hashPassword(password);
+        })
         .then(hash => {
-        return User.create({
-            username,
-            password: hash
-        });
-    })
+            return User.create({
+                username,
+                password: hash
+            });
+        })
         .then(user => {
-        return res.status(201).json(user.apiRepr());
-    })
+            return res.status(201).json(user.apiRepr());
+        })
         .catch(err => {
-        if (err.reason === 'ValidationError') {
-            return res.status(err.code).json(err);
-        }
-        res.status(500).json({code: 500, message: 'Internal server error'});
-    });
+            if (err.reason === 'ValidationError') {
+                return res.status(err.code).json(err);
+            }
+            console.log(err);
+            res.status(500).json({
+                code: 500,
+                message: 'Internal server error validation'
+            });
+        });
 });
 
 
 router.get('/', (req, res) => {
     return User.find()
         .then(users => res.json(users.map(user => user.apiRepr())))
-        .catch(err => res.status(500).json({message: 'Internal server error'}));
+        .catch(err => res.status(500).json({
+            message: 'Internal server error cant find user'
+        }));
 });
 
-module.exports = {router};
+module.exports = {
+    router
+};

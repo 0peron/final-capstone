@@ -1,5 +1,5 @@
 /*express resources*/
-//require('dotenv').config();
+require('dotenv').config();
 var express = require('express');
 var bodyParser = require('body-parser');
 var jsonParser = bodyParser.json();
@@ -9,6 +9,7 @@ var Comment = require('./models/comment');
 var passport = require('passport');
 var {router: usersRouter} = require('./users');
 var {router: authRouter, basicStrategy, jwtStrategy} = require('./auth');
+var methodOverride = require('method-override');
 
 
 /*api resources*/
@@ -27,6 +28,8 @@ app.use(bodyParser.urlencoded({
     extended: false
 }));
 
+
+app.use(methodOverride('_method'));
 app.use(function(req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Headers', 'Content-Type,Authorization');
@@ -37,13 +40,13 @@ app.use(function(req, res, next) {
     next();
 });
 
-app.use(passport.initialize());
-passport.use(basicStrategy);
-passport.use(jwtStrategy);
 
 app.use('/users/', usersRouter);
 app.use('/login/', authRouter);
 
+app.use(passport.initialize());
+passport.use(basicStrategy);
+passport.use(jwtStrategy);
 
 var server = http.Server(app);
 mongoose.connect(config.DATABASE_URL)
@@ -99,7 +102,6 @@ app.get('/populate-cart', function(req, res) {
 });
 
 app.post('/add-to-cart', function(req, res) {
-    console.log('image', req.body.image);
     var requiredFields = ['name', 'link', 'description', 'image'];
     for (var i = 0; i < requiredFields.length; i++) {
         var field = requiredFields[i];
@@ -187,7 +189,7 @@ app.post('/add-to-comment', function(req, res) {
 
 
 app.delete('/delete-comment', function(req, res) {
-    console.log(req.body.commentId);
+    console.log(req.body._id);
 
     Comment.find(function(err, notes) {
         if (err) {
@@ -196,7 +198,7 @@ app.delete('/delete-comment', function(req, res) {
             });
         }
         Comment.remove({
-                idValue: req.body.commentId
+                _id: req.body._id
             },
             function() {
                 res.status(201).json(notes);
@@ -204,90 +206,8 @@ app.delete('/delete-comment', function(req, res) {
     });
 });
 
-//login//
-
-//app.post('/login', function(req, res) {
-//    var userName = req.body.userName;
-//    var password = req.body.password;
-//    console.log('post:', userName, password);
-//    Users.findOne({
-//        userName: userName,
-//        password: password
-//    }, function(err, users) {
-//        if (err) {
-//            return res.status(500).json({
-//                message: 'Internal Server Error'
-//            });
-//        }
-//        if (!users) {
-//            return res.status(401).json({
-//                message: 'Not found'
-//            });
-//        }
-//        else {
-//            console.log('validatePassword');
-//            Users.schema.methods.validatePassword(password, function(err, isValid) {
-//                console.log(err, isValid, 'hello');
-//                if (err) {
-//                    console.log(err);
-//                }
-//                if (!isValid) {
-//                    return res.status(401).json({
-//                        message: 'oops wrong password'
-//                    });
-//                }
-//                else {
-//                    console.log("User: " + userName + " logged in.");
-//                    return res.json(users);
-//                }
-//
-//            });
-//        }
-//    });
-//});
-//
-////create new users//
-//
-//app.post('/users', function(req, res) {
-//    console.log('made it');
-//    var requiredFields = ['userName', 'password'];
-//    for (var i = 0; i < requiredFields.length; i++) {
-//        var field = requiredFields[i];
-//        if (!(field in req.body)) {
-//            var message = 'Missing `' + field + '` in request body';
-//            console.error(message);
-//            return res.status(400).send(message);
-//        }
-//    }
-//
-//    Users.create({
-//        userName: req.body.userName,
-//        password: req.body.password
-//    }, function(err, user) {
-//        if (err) {
-//            return res.status(500).json({
-//                message: err
-//            });
-//        }
-//        res.status(201).json(user);
-//    });
-//
-//});
-
-app.get ('/users', function(req, res) {
-    return res.status(400).json({
-   message: 'hello users'
-    });
-});
-
-app.get('/login', function (req, res) {
-    return res.status(400).json({
-        message: 'hello login'
-    });
-});
-
 app.get(
-    '/shelf',
+    '/login',
     passport.authenticate('jwt', {session: false}),
     (req, res) => {
         return res.json({
@@ -299,6 +219,7 @@ app.get(
 //logout//
 
 app.get('/logout', function(req, res) {
+    console.log('redirect');
     req.logout();
     res.redirect('/');
 });

@@ -40,7 +40,7 @@ const basicStrategy = new BasicStrategy((username, password, callback) => {
 
 const jwtStrategy = new JwtStrategy(
     {
-        secretOrKey: 'duper',
+        secretOrKey: JWT_SECRET,
         jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme('Bearer'),
         algorithms: ['HS256']
     },

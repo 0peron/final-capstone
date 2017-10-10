@@ -5,10 +5,6 @@ var commentSchema = new mongoose.Schema({
         type: String,
         required: false
     },
-    commentId: {
-        type: Number,
-        required: false
-    },
     bookId: {
         type: String,
         required: false
