@@ -206,15 +206,17 @@ app.delete('/delete-comment', function(req, res) {
     });
 });
 
+//proteced endpoints//
+
 app.get(
     '/login',
     passport.authenticate('jwt', {session: false}),
     (req, res) => {
-        return res.json({
-            data: 'rosebud'
-        });
+        res.redirect('/');
     }
 );
+
+
 
 //logout//
 
