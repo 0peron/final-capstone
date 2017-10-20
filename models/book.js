@@ -21,12 +21,8 @@ var bookSchema = new mongoose.Schema({
     image: {
         type: String,
         required: false
-    }
-//    notes: [{
-//        type: mongoose.Schema.Types.ObjectId,
-//        ref: 'Comment'
-//    }]
-
+    },
+     username: String
 });
 
 var Book = mongoose.model('Book', bookSchema);

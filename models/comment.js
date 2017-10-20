@@ -8,8 +8,8 @@ var commentSchema = new mongoose.Schema({
     bookId: {
         type: String,
         required: false
-    }
-
+    },
+    username: String
 });
 
 var Comment = mongoose.model('Comment', commentSchema);

@@ -90,8 +90,8 @@ app.get('/book/:searchTerm', function(req, res) {
     });
 });
 
-app.get('/populate-cart', function(req, res) {
-    Book.find(function(err, book) {
+app.get('/populate-cart', passport.authenticate('jwt', {session: false}), function(req, res) {
+    Book.find({username:req.user.username}, function(err, book) {
         if (err) {
             return res.status(500).json({
                 message: 'Internal Server Error'
@@ -101,7 +101,7 @@ app.get('/populate-cart', function(req, res) {
     });
 });
 
-app.post('/add-to-cart', function(req, res) {
+app.post('/add-to-cart', passport.authenticate('jwt', {session: false}),  function(req, res) {
     var requiredFields = ['name', 'link', 'description', 'image'];
     for (var i = 0; i < requiredFields.length; i++) {
         var field = requiredFields[i];
@@ -111,13 +111,15 @@ app.post('/add-to-cart', function(req, res) {
             return res.status(400).send(message);
         }
     }
+    console.log(req.user);
 
     Book.create({
             name: req.body.name,
             link: req.body.link,
             idValue: req.body.idValue,
             description: req.body.description,
-            image: req.body.image
+            image: req.body.image,
+            username: req.user.username
         },
         function(err, book) {
             if (err) {
@@ -209,10 +211,11 @@ app.delete('/delete-comment', function(req, res) {
 //proteced endpoints//
 
 app.get(
-    '/login',
+    '/add-to-cart',
     passport.authenticate('jwt', {session: false}),
     (req, res) => {
-        res.redirect('/');
+        res.redirect('/login');
+        console.log('add to cart redirect');
     }
 );
 

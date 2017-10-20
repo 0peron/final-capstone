@@ -45,7 +45,9 @@ function bookApiCall(searchTerm) {
 function displayQuery(data) {
     console.log(data);
     var addHTML = "";
+    var users = "";
     $.each(data.items, function (index, book) {
+        console.log(users);
         addHTML += "<li class ='bookContain'>";
         addHTML += "<div class='bookPreview' type='submit'>";
         addHTML += "<div class='bookTitle'>";
@@ -68,6 +70,8 @@ function displayQuery(data) {
         addHTML += "<input type='hidden' class='addToCartIdValue' value='" + book.id + "'>";
         addHTML += "<input type='hidden' class='addToCartImgValue' value='" + validateUrl(book.volumeInfo.imageLinks) + "'>";
         addHTML += "<input type='hidden' class='addToCartDesValue' value='" + validateText(book.volumeInfo.description) + "'>";
+        addHTML += "<input type='hidden' class='addToCartDesValue' value='" + users._id + "'>";
+
         addHTML += "<button class='addToCartButton' type='submit'>";
         addHTML += "add to Shelf";
         addHTML += "</button>";
@@ -83,7 +87,8 @@ function populateCartContainer() {
             type: "GET",
             url: "/populate-cart",
             dataType: 'json',
-            contentType: 'application/json'
+            contentType: 'application/json',
+        headers: {"Authorization": 'Bearer ' + localStorage.getItem('authToken')}
         })
         .done(function (data) {
             console.log(data);
@@ -184,7 +189,6 @@ function usersApiCall(username, password) {
         })
         .done(function (result) {
             console.log(result);
-            // displayQuery(result);
         })
         .fail(function (jqXHR, error, errorThrown) {
             console.log(jqXHR);
@@ -207,13 +211,13 @@ function login(username, password) {
             url: "/login",
             type: 'POST',
             data: JSON.stringify(params),
-//            dataType: 'json',
+            dataType: 'json',
             contentType: 'application/json',
             headers: {"Authorization": 'Basic ' + loginString}
         })
         .done(function (result) {
             console.log(result);
-            // displayQuery(result);
+            localStorage.setItem('authToken', result.authToken);
         })
         .fail(function (jqXHR, error, errorThrown) {
             console.log(jqXHR);
@@ -272,45 +276,57 @@ $(document).ready(function () {
             });
     });
 
+    $('body').on('click', '.logout', function (event) {
+        localStorage.removeItem('authToken')
+        window.location='/login.html'
+    });
+
     $('body').on('click', '.addToCartButton', function (event) {
-        //if the page refreshes when you submit the form use "preventDefault()" to force JavaScript to handle the form submission
-        event.preventDefault();
-        //get the value from the input box
-        var bookValue = $(this).parent().find('.addToCartBookValue').val();
-        var linkValue = $(this).parent().find('.addToCartLinkValue').val();
-        var idValue = $(this).parent().find('.addToCartIdValue').val();
-        var imgValue = $(this).parent().find('.addToCartImgValue').val();
-        var desValue = $(this).parent().find('.addToCartDesValue').val();
-        console.log(bookValue, linkValue, imgValue);
-        alert(bookValue + ' added to shelf');
+        if (localStorage.getItem('authToken')=== null) {
+            alert('you are not logged in');
+        }
+        else {
+            //if the page refreshes when you submit the form use "preventDefault()" to force JavaScript to handle the form submission
+            event.preventDefault();
+            //get the value from the input box
+            var bookValue = $(this).parent().find('.addToCartBookValue').val();
+            var linkValue = $(this).parent().find('.addToCartLinkValue').val();
+            var idValue = $(this).parent().find('.addToCartIdValue').val();
+            var imgValue = $(this).parent().find('.addToCartImgValue').val();
+            var desValue = $(this).parent().find('.addToCartDesValue').val();
+            console.log(bookValue, linkValue, imgValue);
+            alert(bookValue + ' added to shelf');
 
 
-        var nameObject = {
-            'name': bookValue,
-            'link': linkValue,
-            'idValue': idValue,
-            'description': desValue,
-            'image': imgValue
-        };
+            var nameObject = {
+                'name': bookValue,
+                'link': linkValue,
+                'idValue': idValue,
+                'description': desValue,
+                'image': imgValue,
+            };
 
-        $.ajax({
+            $.ajax({
                 method: 'POST',
                 dataType: 'json',
                 contentType: 'application/json',
                 data: JSON.stringify(nameObject),
-                url: '/add-to-cart/'
+                url: '/add-to-cart',
+                headers: {"Authorization": 'Bearer ' + localStorage.getItem('authToken')}
             })
-            .done(function (result) {
+                .done(function (result) {
                 console.log('result', result);
                 populateCartContainer();
             })
-            .fail(function (jqXHR, error, errorThrown) {
+                .fail(function (jqXHR, error, errorThrown) {
                 console.log(jqXHR);
                 console.log(error);
                 console.log(errorThrown);
                 $('.errorMessage').show();
                 $('.errorMessage p').text("Opps there was an error handeling your request.")
             });
+        }
+
     });
 
 
