@@ -123,7 +123,7 @@ function populateCartContainer() {
                     addHTML += "<button class='addComment' id=" + book.idValue + ">Add</button>";
                     addHTML += "</form>";
                     addHTML += "</div>";
-                    addHTML += "<input type='hidden' class='deleteIdValue' value='" + book.idValue + "'>";
+                    addHTML += "<input type='hidden' class='deleteIdValue' value='" + book._id + "'>"
                     addHTML += "</li>";
                 });
                 $(".shelf ul").html(addHTML);
@@ -364,7 +364,7 @@ $(document).ready(function () {
         console.log('id value', idValue);
 
         var bookid = {
-            idValue: idValue
+            _id: idValue,
         };
 
         $.ajax({

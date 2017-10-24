@@ -142,7 +142,7 @@ app.post('/add-to-cart', passport.authenticate('jwt', {
 });
 
 app.delete('/delete-cart', function (req, res) {
-    console.log(req.body.idValue);
+    console.log(req.body._id);
 
     Book.find(function (err, book) {
         if (err) {
@@ -151,7 +151,8 @@ app.delete('/delete-cart', function (req, res) {
             });
         }
         Book.remove({
-                idValue: req.body.idValue
+//                idValue: req.body.idValue
+                _id: req.body._id
             },
             function () {
                 res.status(201).json(book);
