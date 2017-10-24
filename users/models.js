@@ -12,7 +12,8 @@ var UserSchema = mongoose.Schema({
     password: {
         type: String,
         required: true
-    }
+    },
+    commentRef: [{ type: mongoose.Schema.Types.ObjectId, ref:'comments'}]
 });
 
 UserSchema.methods.apiRepr = function() {

@@ -10,6 +10,7 @@ var commentSchema = new mongoose.Schema({
         required: false
     },
     username: String
+
 });
 
 var Comment = mongoose.model('Comment', commentSchema);

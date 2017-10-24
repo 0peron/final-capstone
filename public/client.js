@@ -82,94 +82,105 @@ function displayQuery(data) {
 }
 
 function populateCartContainer() {
+    if (localStorage.getItem('authToken') === null) {
+        console.log('Login');
+    } else {
+        $.ajax({
+                type: "GET",
+                url: "/populate-cart",
+                dataType: 'json',
+                contentType: 'application/json',
+                headers: {
+                    "Authorization": 'Bearer ' + localStorage.getItem('authToken')
+                }
+            })
+            .done(function (data) {
+                console.log(data);
+                var addHTML = "";
 
-    $.ajax({
-            type: "GET",
-            url: "/populate-cart",
-            dataType: 'json',
-            contentType: 'application/json',
-        headers: {"Authorization": 'Bearer ' + localStorage.getItem('authToken')}
-        })
-        .done(function (data) {
-            console.log(data);
-            var addHTML = "";
-
-            $.each(data, function (index, book) {
-                addHTML += "<li class='itemContain'>";
-                addHTML += "<div class = 'bookImg'>";
-                addHTML += "<a href='" + book.link + "' target='_blank'>";
-                addHTML += "<img src='" + book.image + "'/>";
-                addHTML += "</a>";
-                addHTML += "</div>";
-                addHTML += "<button class='clearCartButton'>";
-                addHTML += "<img src='/image/cancel-square.png' class='clear-cart-icon'>";
-                addHTML += '</button>';
-                addHTML += "<div class='title'>";
-                addHTML += "<a href='" + book.link + "' target='_blank'>" + book.name + "</a>";
-                addHTML += "</div>";
-                addHTML += "<div class='bookDescription'>";
-                addHTML += "<p>" + book.description + "</p>";
-                addHTML += "</div>";
-                addHTML += "<div class ='textBox'>";
-                addHTML += "<ul class='userNotes-" + book.idValue + "'>";
-                addHTML += "</ul>";
-                addHTML += "<form class='commentInput'>";
-                addHTML += "<input type='text' class='userComment' placeholder='Add Notes'>";
-                addHTML += "<input type='hidden' class='comId' value='" + book.idValue + "'>";
-                addHTML += "<button class='addComment' id=" + book.idValue + ">Add</button>";
-                addHTML += "</form>";
-                addHTML += "</div>";
-                addHTML += "<input type='hidden' class='deleteIdValue' value='" + book.idValue + "'>";
-                addHTML += "</li>";
+                $.each(data, function (index, book) {
+                    addHTML += "<li class='itemContain'>";
+                    addHTML += "<div class = 'bookImg'>";
+                    addHTML += "<a href='" + book.link + "' target='_blank'>";
+                    addHTML += "<img src='" + book.image + "'/>";
+                    addHTML += "</a>";
+                    addHTML += "</div>";
+                    addHTML += "<button class='clearCartButton'>";
+                    addHTML += "<img src='/image/cancel-square.png' class='clear-cart-icon'>";
+                    addHTML += '</button>';
+                    addHTML += "<div class='title'>";
+                    addHTML += "<a href='" + book.link + "' target='_blank'>" + book.name + "</a>";
+                    addHTML += "</div>";
+                    addHTML += "<div class='bookDescription'>";
+                    addHTML += "<p>" + book.description + "</p>";
+                    addHTML += "</div>";
+                    addHTML += "<div class ='textBox'>";
+                    addHTML += "<ul class='userNotes-" + book.idValue + "'>";
+                    addHTML += "</ul>";
+                    addHTML += "<form class='commentInput'>";
+                    addHTML += "<input type='text' class='userComment' placeholder='Add Notes'>";
+                    addHTML += "<input type='hidden' class='comId' value='" + book.idValue + "'>";
+                    addHTML += "<button class='addComment' id=" + book.idValue + ">Add</button>";
+                    addHTML += "</form>";
+                    addHTML += "</div>";
+                    addHTML += "<input type='hidden' class='deleteIdValue' value='" + book.idValue + "'>";
+                    addHTML += "</li>";
+                });
+                $(".shelf ul").html(addHTML);
+                populateNotes();
+            })
+            .fail(function (jqXHR, error, errorThrown) {
+                console.log(jqXHR);
+                console.log(error);
+                console.log(errorThrown);
+                $('.errorMessage').show();
+                $('.errorMessage p').text("Opps there was an error handeling your request.")
             });
-            $(".shelf ul").html(addHTML);
-            populateNotes();
-        })
-        .fail(function (jqXHR, error, errorThrown) {
-            console.log(jqXHR);
-            console.log(error);
-            console.log(errorThrown);
-            $('.errorMessage').show();
-            $('.errorMessage p').text("Opps there was an error handeling your request.")
-        });
+    }
 }
 
 function populateNotes() {
-
-    $.ajax({
-            type: "GET",
-            url: "/populate-notes",
-            dataType: 'json',
-            contentType: 'application/json'
-        })
-        .done(function (data) {
-            if (!data.length) {
-                return;
-            }
-            console.log(data);
-            console.log(data.length, 'comments');
-            $('ul[class*="userNotes"]').html("");
-            $.each(data, function (book, comment, index) {
-                console.log('comment:', comment, 'bookid:', comment.bookId);
-                var addHTML = "";
-                addHTML += "<li class='noteContain'>";
-                addHTML += "<div class = 'addedNote'>";
-                addHTML += "<p class = 'text'>" + comment.text + "</p>";
-                addHTML += "<button class='delComment'>Remove</button>";
-                addHTML += "</div>";
-                addHTML += "<input type='hidden' class='delCommentId' value='" + comment._id + "'>";
-                addHTML += "</li>";
-                $(".userNotes-" + comment.bookId).append(addHTML);
-                console.log(comment._id);
+    if (localStorage.getItem('authToken') === null) {
+        console.log('Login');
+    } else {
+        $.ajax({
+                type: "GET",
+                url: "/populate-notes",
+                dataType: 'json',
+                contentType: 'application/json',
+                headers: {
+                    "Authorization": 'Bearer ' + localStorage.getItem('authToken')
+                }
+            })
+            .done(function (data) {
+                if (!data.length) {
+                    return;
+                }
+                console.log(data);
+                console.log(data.length, 'comments');
+                $('ul[class*="userNotes"]').html("");
+                $.each(data, function (book, comment, index) {
+                    console.log('comment:', comment, 'bookid:', comment.bookId);
+                    var addHTML = "";
+                    addHTML += "<li class='noteContain'>";
+                    addHTML += "<div class = 'addedNote'>";
+                    addHTML += "<p class = 'text'>" + comment.text + "</p>";
+                    addHTML += "<button class='delComment'>Remove</button>";
+                    addHTML += "</div>";
+                    addHTML += "<input type='hidden' class='delCommentId' value='" + comment._id + "'>";
+                    addHTML += "</li>";
+                    $(".userNotes-" + comment.bookId).append(addHTML);
+                    console.log(comment._id);
+                });
+            })
+            .fail(function (jqXHR, error, errorThrown) {
+                console.log(jqXHR);
+                console.log(error);
+                console.log(errorThrown);
+                $('.errorMessage').show();
+                $('.errorMessage p').text("Opps there was an error handeling your request.")
             });
-        })
-        .fail(function (jqXHR, error, errorThrown) {
-            console.log(jqXHR);
-            console.log(error);
-            console.log(errorThrown);
-            $('.errorMessage').show();
-            $('.errorMessage p').text("Opps there was an error handeling your request.")
-        });
+    }
 }
 
 function usersApiCall(username, password) {
@@ -213,11 +224,14 @@ function login(username, password) {
             data: JSON.stringify(params),
             dataType: 'json',
             contentType: 'application/json',
-            headers: {"Authorization": 'Basic ' + loginString}
+            headers: {
+                "Authorization": 'Basic ' + loginString
+            }
         })
         .done(function (result) {
             console.log(result);
             localStorage.setItem('authToken', result.authToken);
+            window.location = '/'
         })
         .fail(function (jqXHR, error, errorThrown) {
             console.log(jqXHR);
@@ -245,47 +259,57 @@ $(document).ready(function () {
     });
 
     $('body').on('click', '.addComment', function (event) {
-        event.preventDefault();
-        var commentValue = $(this).parent().find('.userComment').val();
-        var bookId = $(this).parent().find('.comId').val();
-        console.log('on click bookid:', bookId);
-        console.log("comment", commentValue);
+        if (localStorage.getItem('authToken') === null) {
+            alert('you are not logged in');
+            window.location = '/login.html';
+        } else {
+            event.preventDefault();
+            var commentValue = $(this).parent().find('.userComment').val();
+            var bookId = $(this).parent().find('.comId').val();
+            console.log('on click bookid:', bookId);
+            console.log("comment", commentValue);
 
-        var commentObject = {
-            'text': commentValue,
-            'bookId': bookId
-        };
+            var commentObject = {
+                'text': commentValue,
+                'bookId': bookId,
+            };
 
-        $.ajax({
-                method: 'POST',
-                dataType: 'json',
-                contentType: 'application/json',
-                data: JSON.stringify(commentObject),
-                url: '/add-to-comment/'
-            })
-            .done(function (result) {
-                console.log('com res', result);
-                populateNotes();
-            })
-            .fail(function (jqXHR, error, errorThrown) {
-                console.log(jqXHR);
-                console.log(error);
-                console.log(errorThrown);
-                $('.errorMessage').show();
-                $('.errorMessage p').text("Opps there was an error handeling your request.")
-            });
+            $.ajax({
+                    method: 'POST',
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    data: JSON.stringify(commentObject),
+                    url: '/add-to-comment/',
+                    headers: {
+                        "Authorization": 'Bearer ' + localStorage.getItem('authToken')
+                    }
+                })
+                .done(function (result) {
+                    console.log('comment res', result);
+                    populateNotes();
+                })
+                .fail(function (jqXHR, error, errorThrown) {
+                    console.log(jqXHR);
+                    console.log(error);
+                    console.log(errorThrown);
+                    $('.errorMessage').show();
+                    $('.errorMessage p').text("Opps there was an error handeling your request.")
+                });
+        }
+
     });
 
     $('body').on('click', '.logout', function (event) {
         localStorage.removeItem('authToken')
-        window.location='/login.html'
+        alert('You have been Logged Out');
+        window.location = '/login.html';
     });
 
     $('body').on('click', '.addToCartButton', function (event) {
-        if (localStorage.getItem('authToken')=== null) {
+        if (localStorage.getItem('authToken') === null) {
             alert('you are not logged in');
-        }
-        else {
+            window.location = '/login.html';
+        } else {
             //if the page refreshes when you submit the form use "preventDefault()" to force JavaScript to handle the form submission
             event.preventDefault();
             //get the value from the input box
@@ -307,24 +331,26 @@ $(document).ready(function () {
             };
 
             $.ajax({
-                method: 'POST',
-                dataType: 'json',
-                contentType: 'application/json',
-                data: JSON.stringify(nameObject),
-                url: '/add-to-cart',
-                headers: {"Authorization": 'Bearer ' + localStorage.getItem('authToken')}
-            })
+                    method: 'POST',
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    data: JSON.stringify(nameObject),
+                    url: '/add-to-cart',
+                    headers: {
+                        "Authorization": 'Bearer ' + localStorage.getItem('authToken')
+                    }
+                })
                 .done(function (result) {
-                console.log('result', result);
-                populateCartContainer();
-            })
+                    console.log('result', result);
+                    populateCartContainer();
+                })
                 .fail(function (jqXHR, error, errorThrown) {
-                console.log(jqXHR);
-                console.log(error);
-                console.log(errorThrown);
-                $('.errorMessage').show();
-                $('.errorMessage p').text("Opps there was an error handeling your request.")
-            });
+                    console.log(jqXHR);
+                    console.log(error);
+                    console.log(errorThrown);
+                    $('.errorMessage').show();
+                    $('.errorMessage p').text("Opps there was an error handeling your request.")
+                });
         }
 
     });
