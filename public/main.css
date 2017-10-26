@@ -285,6 +285,20 @@ section.wrapper .bookTitles ul li.bookContain .bookPreview form.addBookToCart bu
     color: aqua;
 }
 
+section.shelf .emptyShelf {
+    display: block;
+    text-align: center;
+    width: 75%;
+    height: 20%;
+    border: 1px solid;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: white;
+    margin-top: 100px;
+    font-size: 110%;
+    padding: 20px;
+    color: #613DC1;
+}
 section.shelf ul.shelfItems {
     display: block;
     text-align: center;
@@ -380,6 +394,20 @@ button.clearCartButton img {
 footer {}
 
 /* login */
+
+section.demo {
+    display: block;
+    text-align: center;
+    width: 40%;
+    height: inherit;
+    border: 1px solid;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: white;
+    margin-top: 100px;
+    font-size: 110%;
+    padding: 10px;
+}
 
 section.signup {
     display: block;

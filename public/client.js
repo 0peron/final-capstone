@@ -21,6 +21,17 @@ function validateText(text) {
     return output;
 }
 
+function loggingOut() {
+    if (localStorage.getItem('authToken') === null) {
+        $('.logout').hide();
+        $('.logging').show();
+    }
+    else {
+        $('.logout').show();
+        $('.logging').hide();
+    }
+}
+
 function bookApiCall(searchTerm) {
 
     $.ajax({
@@ -96,38 +107,75 @@ function populateCartContainer() {
             })
             .done(function (data) {
                 console.log(data);
-                var addHTML = "";
+                if (!data.length) {
+                    $('.emptyShelf').show();
+                    var addHTML ="";
 
-                $.each(data, function (index, book) {
-                    addHTML += "<li class='itemContain'>";
-                    addHTML += "<div class = 'bookImg'>";
-                    addHTML += "<a href='" + book.link + "' target='_blank'>";
-                    addHTML += "<img src='" + book.image + "'/>";
-                    addHTML += "</a>";
-                    addHTML += "</div>";
-                    addHTML += "<button class='clearCartButton'>";
-                    addHTML += "<img src='/image/cancel-square.png' class='clear-cart-icon'>";
-                    addHTML += '</button>';
-                    addHTML += "<div class='title'>";
-                    addHTML += "<a href='" + book.link + "' target='_blank'>" + book.name + "</a>";
-                    addHTML += "</div>";
-                    addHTML += "<div class='bookDescription'>";
-                    addHTML += "<p>" + book.description + "</p>";
-                    addHTML += "</div>";
-                    addHTML += "<div class ='textBox'>";
-                    addHTML += "<ul class='userNotes-" + book.idValue + "'>";
-                    addHTML += "</ul>";
-                    addHTML += "<form class='commentInput'>";
-                    addHTML += "<input type='text' class='userComment' placeholder='Add Notes'>";
-                    addHTML += "<input type='hidden' class='comId' value='" + book.idValue + "'>";
-                    addHTML += "<button class='addComment' id=" + book.idValue + ">Add</button>";
-                    addHTML += "</form>";
-                    addHTML += "</div>";
-                    addHTML += "<input type='hidden' class='deleteIdValue' value='" + book._id + "'>"
-                    addHTML += "</li>";
-                });
-                $(".shelf ul").html(addHTML);
-                populateNotes();
+                    $.each(data, function (index, book) {
+                        addHTML += "<li class='itemContain'>";
+                        addHTML += "<div class = 'bookImg'>";
+                        addHTML += "<a href='" + book.link + "' target='_blank'>";
+                        addHTML += "<img src='" + book.image + "'/>";
+                        addHTML += "</a>";
+                        addHTML += "</div>";
+                        addHTML += "<button class='clearCartButton'>";
+                        addHTML += "<img src='/image/cancel-square.png' class='clear-cart-icon'>";
+                        addHTML += '</button>';
+                        addHTML += "<div class='title'>";
+                        addHTML += "<a href='" + book.link + "' target='_blank'>" + book.name + "</a>";
+                        addHTML += "</div>";
+                        addHTML += "<div class='bookDescription'>";
+                        addHTML += "<p>" + book.description + "</p>";
+                        addHTML += "</div>";
+                        addHTML += "<div class ='textBox'>";
+                        addHTML += "<ul class='userNotes-" + book.idValue + "'>";
+                        addHTML += "</ul>";
+                        addHTML += "<form class='commentInput'>";
+                        addHTML += "<input type='text' class='userComment' placeholder='Add Notes'>";
+                        addHTML += "<input type='hidden' class='comId' value='" + book.idValue + "'>";
+                        addHTML += "<button class='addComment' id=" + book.idValue + ">Add</button>";
+                        addHTML += "</form>";
+                        addHTML += "</div>";
+                        addHTML += "<input type='hidden' class='deleteIdValue' value='" + book._id + "'>"
+                        addHTML += "</li>";
+                    });
+                    $(".shelf ul").html(addHTML);
+                    populateNotes();
+                } else {
+                    var addHTML = "";
+
+                    $.each(data, function (index, book) {
+                        addHTML += "<li class='itemContain'>";
+                        addHTML += "<div class = 'bookImg'>";
+                        addHTML += "<a href='" + book.link + "' target='_blank'>";
+                        addHTML += "<img src='" + book.image + "'/>";
+                        addHTML += "</a>";
+                        addHTML += "</div>";
+                        addHTML += "<button class='clearCartButton'>";
+                        addHTML += "<img src='/image/cancel-square.png' class='clear-cart-icon'>";
+                        addHTML += '</button>';
+                        addHTML += "<div class='title'>";
+                        addHTML += "<a href='" + book.link + "' target='_blank'>" + book.name + "</a>";
+                        addHTML += "</div>";
+                        addHTML += "<div class='bookDescription'>";
+                        addHTML += "<p>" + book.description + "</p>";
+                        addHTML += "</div>";
+                        addHTML += "<div class ='textBox'>";
+                        addHTML += "<ul class='userNotes-" + book.idValue + "'>";
+                        addHTML += "</ul>";
+                        addHTML += "<form class='commentInput'>";
+                        addHTML += "<input type='text' class='userComment' placeholder='Add Notes'>";
+                        addHTML += "<input type='hidden' class='comId' value='" + book.idValue + "'>";
+                        addHTML += "<button class='addComment' id=" + book.idValue + ">Add</button>";
+                        addHTML += "</form>";
+                        addHTML += "</div>";
+                        addHTML += "<input type='hidden' class='deleteIdValue' value='" + book._id + "'>"
+                        addHTML += "</li>";
+                    });
+                    $('.emptyShelf').hide();
+                    $(".shelf ul").html(addHTML);
+                    populateNotes();
+                }
             })
             .fail(function (jqXHR, error, errorThrown) {
                 console.log(jqXHR);
@@ -245,6 +293,8 @@ function login(username, password) {
 $(document).ready(function () {
     populateCartContainer();
     $('.register').hide();
+    $('.logout').hide();
+    loggingOut();
     $('.reg').on('click', function (event) {
         event.preventDefault();
         $('.register').show();
@@ -352,7 +402,6 @@ $(document).ready(function () {
                     $('.errorMessage p').text("Opps there was an error handeling your request.")
                 });
         }
-
     });
 
 
