@@ -25,8 +25,7 @@ function loggingOut() {
     if (localStorage.getItem('authToken') === null) {
         $('.logout').hide();
         $('.logging').show();
-    }
-    else {
+    } else {
         $('.logout').show();
         $('.logging').hide();
     }
@@ -109,7 +108,7 @@ function populateCartContainer() {
                 console.log(data);
                 if (!data.length) {
                     $('.emptyShelf').show();
-                    var addHTML ="";
+                    var addHTML = "";
 
                     $.each(data, function (index, book) {
                         addHTML += "<li class='itemContain'>";
@@ -140,7 +139,6 @@ function populateCartContainer() {
                         addHTML += "</li>";
                     });
                     $(".shelf ul").html(addHTML);
-                    populateNotes();
                 } else {
                     var addHTML = "";
 
@@ -308,10 +306,20 @@ $(document).ready(function () {
         bookApiCall(searchTerm);
     });
 
+    $('a.shelf').on('click', function (event) {
+        if (localStorage.getItem('authToken') === null) {
+            alert('you are not logged in');
+            window.location.href = '/login.html';
+        } else {
+            event.preventDefault();
+            window.location.href = '/shelf.html';
+        }
+    });
+
     $('body').on('click', '.addComment', function (event) {
         if (localStorage.getItem('authToken') === null) {
             alert('you are not logged in');
-            window.location = '/login.html';
+            window.location.href = '/login.html';
         } else {
             event.preventDefault();
             var commentValue = $(this).parent().find('.userComment').val();

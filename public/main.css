@@ -109,6 +109,8 @@ header section.container form button:hover {
     position: relative;
     display: inline-block;
     padding: 10px 10px;
+    cursor: pointer;
+
 }
 
 .navRight li a:hover {
@@ -128,13 +130,15 @@ section.landing {
     display: block;
     text-align: center;
     width: 60%;
-    height: 700px;
+    height: inherit;
     border: 1px solid;
     margin-left: auto;
     margin-right: auto;
     background-color: white;
     margin-top: 100px;
+    margin-bottom: 50px;
     font-size: 110%;
+    padding: 5px;
 }
 
 section.landing p {
@@ -389,11 +393,10 @@ button.clearCartButton img {
     width: 20px;
     color: transparent;
 }
-/* footer styles */
-
-footer {}
 
 /* login */
+
+
 
 section.demo {
     display: block;
