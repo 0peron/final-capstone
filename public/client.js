@@ -246,14 +246,15 @@ function usersApiCall(username, password) {
         })
         .done(function (result) {
             console.log(result);
+            $('.taken').hide();
+            alert('you have been registered.');
         })
         .fail(function (jqXHR, error, errorThrown) {
             console.log(jqXHR);
             console.log(error);
             console.log(errorThrown);
             console.log("these are params", params);
-            $('.errorMessage').show();
-            $('.errorMessage p').text("Opps there was an error handeling your request.")
+            $('.taken').show();
         });
 }
 
@@ -276,6 +277,7 @@ function login(username, password) {
         })
         .done(function (result) {
             console.log(result);
+            $('.invalid').hide();
             localStorage.setItem('authToken', result.authToken);
             window.location = '/'
         })
@@ -283,13 +285,14 @@ function login(username, password) {
             console.log(jqXHR);
             console.log(error);
             console.log(errorThrown);
-            $('.errorMessage').show();
-            $('.errorMessage p').text("Opps there was an error handeling your request.")
+            $('.invalid').show();
         });
 }
 
 $(document).ready(function () {
     populateCartContainer();
+    $('.invalid').hide();
+    $('.taken').hide();
     $('.register').hide();
     $('.logout').hide();
     loggingOut();
