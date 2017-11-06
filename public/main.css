@@ -27,15 +27,15 @@ ul {
 
 input {
     background-color: transparent;
-    border: 1px solid black;
-    padding: .2rem 0.5rem;
+    border: 1px solid grey;
+    padding: .7rem 0.9rem;
 }
 
 
 /* header styles */
 
 header {
-    border-bottom: 1px solid;
+    border-bottom: 1px solid grey;
     width: 100%;
     height: 125px;
     text-align: center;
@@ -47,7 +47,7 @@ header h1 {
     text-align: center;
     color: #613DC1;
     display: inline-block;
-    margin-left: 410px;
+    margin-left: 340px;
 }
 
 header section.container {
@@ -73,11 +73,11 @@ header section.container form input {
 }
 
 header section.container form button {
-    font: bold 11px Arial;
+    font: bold 15px Arial;
     text-decoration: none;
     background-color: #613DC1;
     color: white;
-    padding: .2rem 0.5rem;
+    padding: .7rem 1rem;
     text-align: center;
 }
 
@@ -131,7 +131,7 @@ section.landing {
     text-align: center;
     width: 60%;
     height: inherit;
-    border: 1px solid;
+    border: 1px solid grey;
     margin-left: auto;
     margin-right: auto;
     background-color: white;
@@ -209,7 +209,7 @@ section.wrapper .bookTitles ul li.bookContain {
     display: inline-block;
     width: 22%;
     vertical-align: top;
-    border: 1px solid black;
+    border: 1px solid grey;
     margin-top: 4rem;
     margin-bottom: 1rem;
     margin-left: 1%;
@@ -294,7 +294,7 @@ section.shelf .emptyShelf {
     text-align: center;
     width: 75%;
     height: 20%;
-    border: 1px solid;
+    border: 1px solid grey;
     margin-left: auto;
     margin-right: auto;
     background-color: white;
@@ -308,7 +308,7 @@ section.shelf ul.shelfItems {
     text-align: center;
     width: 75%;
     height: 20%;
-    border: 1px solid;
+    border: 1px solid grey;
     margin-left: auto;
     margin-right: auto;
     background-color: white;
@@ -322,7 +322,7 @@ li.itemContain {
     text-align: center;
     padding: 35px;
     height: inherit;
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid grey;
 }
 
 section.shelf ul.shelfItems li.itemContain .bookImg {
@@ -403,7 +403,7 @@ section.demo {
     text-align: center;
     width: 40%;
     height: inherit;
-    border: 1px solid;
+    border: 1px solid grey;
     margin-left: auto;
     margin-right: auto;
     background-color: white;
@@ -418,7 +418,7 @@ section.signup {
     text-align: center;
     width: 40%;
     height: inherit;
-    border: 1px solid;
+    border: 1px solid grey;
     margin-left: auto;
     margin-right: auto;
     background-color: white;
