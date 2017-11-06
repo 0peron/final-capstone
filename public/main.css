@@ -353,8 +353,17 @@ section.shelf ul.shelfItems li.itemContain .commentInput {
     margin-top: 100px;
 }
 
-.textbox p {
+section.shelf ul.shelfItems li.itemContain .textBox {
+    width: 70%;
+    border-top: 1px solid grey;
+    margin-left: 220px;
+    margin-top: 30px;
 
+}
+
+li.noteContain {
+    margin-bottom: 15px;
+    padding-top: 5px;
 }
 
 .addComment {
@@ -362,7 +371,7 @@ section.shelf ul.shelfItems li.itemContain .commentInput {
     text-decoration: none !important;
     background-color: #613DC1 !important;
     color: white !important;
-    padding: .2rem 0.5rem !important;
+    padding: .5rem 0.7rem !important;
     text-align: center !important;
     margin-left: 2px !important;
 }
